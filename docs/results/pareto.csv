@@ -1,0 +1,5 @@
+policy,success_rate,avg_model_calls,avg_latency_ms,unsafe_compression_rate
+baseline,1,9.4,1810.2239800000013,0
+naive_skip,1,2,471.4836799999998,1
+htc_no_risk,1,4,829.6301400000004,0.8
+htc,1,5.6,1107.829139999999,0

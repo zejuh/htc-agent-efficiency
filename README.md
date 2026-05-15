@@ -66,6 +66,8 @@ Artifacts are written to `results/browser_demo/`:
 - `gate_model.json`
 - `videos/`
 
+Lightweight result summaries suitable for repository review are tracked under `docs/results/`. Full generated trajectories, videos, and raw result folders are intentionally ignored by git and can be regenerated with the scripts above.
+
 The current implementation includes a lightweight learned observation-gate classifier for demo-scale training. It is useful as a reproducible model artifact, but paper-level claims require training/evaluation on larger real benchmark logs.
 
 ## Ollama Local Model Agent Demo
