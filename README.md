@@ -27,10 +27,6 @@ This repository currently supports both offline trajectory evaluation and live b
 - Ollama local-model browser-control runner
 - unit tests, sample data, and reproducible scripts
 
-## Directory Note
-
-The project root is `htc-agent-efficiency/`. The folder `htc_agent_efficiency/` inside it is the Python package. This is normal: Python imports cannot use hyphens, so the package uses underscores. See `PROJECT_STRUCTURE.md` for the full layout.
-
 ## Quick Start
 
 ```powershell
