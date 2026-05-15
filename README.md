@@ -11,20 +11,21 @@ The project studies a practical gap in computer-use agents: even when agents fin
 3. Can observation skipping reduce latency while preserving risk-aware checkpoints?
 4. Does compression improve the success-cost Pareto frontier?
 
-## Current Scope
+## Implemented Scope
 
-This scaffold supports offline trajectory experiments:
+This repository currently supports both offline trajectory evaluation and live browser experiments:
 
 - JSONL trajectory loading
 - human-normalized efficiency metrics
 - redundancy taxonomy
-- macro mining from reference trajectories
-- rule-based HTC compression
-- risk-aware observation gating
+- parameterized macro mining from reference trajectories
+- rule-based HTC compression with risk-aware observation gating
+- model-based observation gate loading from a trained JSON artifact
 - CLI evaluation
-- unit tests and sample data
-
-The intended next adapters are OSWorld, Mind2Web, WebArena, and browser-agent logs.
+- Playwright browser-control benchmark
+- controlled ablations: `baseline`, `naive_skip`, `htc_no_risk`, and `htc`
+- Ollama local-model browser-control runner
+- unit tests, sample data, and reproducible scripts
 
 ## Directory Note
 
@@ -140,25 +141,39 @@ Important optional fields:
 - `observation_required`: whether the original policy explicitly required observing after this step
 - `metadata`: benchmark-specific state, app, URL, screenshot path, DOM id, accessibility node id
 
-## Experiment Ideas
+## Implemented Evaluation
 
-Paper-grade experiments should report:
+The controlled browser demo reports:
 
 - success rate
-- action count
+- executable action count
+- total trajectory steps
 - model calls
 - wall-clock latency
-- token/cost proxy
-- human-normalized step ratio
+- human-normalized step ratio for offline/reference comparisons
 - efficiency-adjusted success
+- unsafe checkpoint misses
 - unsafe compression rate
-- Pareto frontier of success vs cost
+- Pareto artifacts for success vs model-call cost
 
-Recommended ablations:
+The currently implemented ablations are:
 
-- baseline trajectories
-- macro retrieval only
-- observation skipping only
-- trajectory rewrite only
-- full HTC compression
-- full HTC compression with risk checkpoints
+- `baseline`: observe-think-act before every primitive action
+- `naive_skip`: aggressively skip intermediate observations
+- `htc_no_risk`: macro-style execution without risk checkpoints
+- `htc`: macro-style execution with risk-aware checkpoints
+- `ollama`: local model chooses actions from browser observations
+
+Latest lightweight summaries are kept in `docs/results/`; full raw artifacts are regenerated under `results/browser_demo/`.
+
+## Roadmap Toward Paper-Grade Experiments
+
+The current repository is a working proof of concept, not a full benchmark paper. To make the results paper-grade, the next steps are:
+
+- expand the local browser task suite from 5 tasks to 30-50 tasks
+- integrate OSWorld, WebArena, or Mind2Web trajectory logs
+- compare against stronger LLM/VLM computer-use agents
+- mine macros from real human/reference demonstrations
+- add confidence intervals and statistical tests across task families
+- add token-cost accounting for local and API model runs
+- evaluate safety on more irreversible/external-action tasks such as delete, submit, publish, and send
