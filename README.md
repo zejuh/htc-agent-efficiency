@@ -100,8 +100,6 @@ The matrix runs:
 - `gemma4:e4b`
 - `gemma4:26b`
 
-All three models run `dom` and `screenshot_dom`. The matrix intentionally excludes screenshot-only control because the local demo showed that setting mostly tests visual grounding and coordinate control rather than HTC trajectory efficiency.
-
 Artifacts:
 
 - `results/browser_demo/ollama_trajectories.jsonl`
@@ -162,9 +160,9 @@ The currently implemented ablations are:
 
 Latest lightweight summaries are kept in `docs/results/`; full raw artifacts are regenerated under `results/browser_demo/`.
 
-## Roadmap Toward Paper-Grade Experiments
+## Future Work
 
-The current repository is a working proof of concept, not a full benchmark paper. To make the results paper-grade, the next steps are:
+The current repository is a working proof of concept. Next steps include:
 
 - expand the local browser task suite from 5 tasks to 30-50 tasks
 - integrate OSWorld, WebArena, or Mind2Web trajectory logs
