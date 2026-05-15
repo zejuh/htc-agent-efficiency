@@ -1,0 +1,176 @@
+:root {
+  color-scheme: light;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f6f7f9;
+  color: #20242c;
+}
+
+body {
+  margin: 0;
+}
+
+.topbar {
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #d9dee8;
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 28px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+#task-label {
+  color: #5c6676;
+  margin-top: 4px;
+}
+
+#status {
+  background: #eef3ff;
+  border: 1px solid #c8d8ff;
+  border-radius: 6px;
+  color: #193b7a;
+  min-width: 240px;
+  padding: 10px 12px;
+  text-align: right;
+}
+
+main {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  padding: 24px;
+}
+
+.workspace {
+  background: #ffffff;
+  border: 1px solid #dce1ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  min-height: 260px;
+  padding: 18px;
+}
+
+.pane,
+.panel,
+.cart {
+  display: grid;
+  gap: 12px;
+}
+
+.panel {
+  border-top: 1px solid #e2e6ee;
+  padding-top: 14px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  background: #295f98;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  min-height: 36px;
+  padding: 8px 12px;
+}
+
+button:disabled {
+  background: #9aa5b5;
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #bac3d1;
+  border-radius: 6px;
+  box-sizing: border-box;
+  min-height: 36px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+textarea {
+  min-height: 86px;
+  resize: vertical;
+}
+
+label {
+  color: #343b48;
+  display: grid;
+  gap: 5px;
+}
+
+.inline {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.inline input {
+  width: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.product,
+.contact-row,
+.file-row,
+.mail-row {
+  background: #f9fafc;
+  border: 1px solid #dfe4ec;
+  border-radius: 6px;
+  color: #20242c;
+  text-align: left;
+}
+
+.product {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.contact-row,
+.file-row,
+.mail-row {
+  color: #20242c;
+}
+
+@media (max-width: 760px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: stretch;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  #status {
+    text-align: left;
+  }
+}
+

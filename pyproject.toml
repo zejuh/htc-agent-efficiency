@@ -1,0 +1,11 @@
+[project]
+name = "htc-agent-efficiency"
+version = "0.1.0"
+description = "Human-like trajectory compression experiments for computer-use agents"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
