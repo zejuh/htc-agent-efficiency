@@ -1,11 +1,10 @@
 [project]
-name = "htc-agent-efficiency"
+name = "selective-observation-agent"
 version = "0.1.0"
-description = "Human-like trajectory compression experiments for computer-use agents"
+description = "Learned, cost-sensitive observation gating for computer-use agents."
 requires-python = ">=3.10"
+# scikit-learn is optional: soa.gate falls back to a built-in logistic trainer if it is absent.
 dependencies = []
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["."]
-
+[tool.setuptools.packages.find]
+include = ["soa*"]

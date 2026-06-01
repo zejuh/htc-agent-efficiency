@@ -1,0 +1,15 @@
+{
+  "name": "selective-observation-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Learned, cost-sensitive observation gating for computer-use agents (oracle-distilled).",
+  "type": "module",
+  "scripts": {
+    "collect": "node runner/collect.mjs",
+    "evaluate": "node runner/evaluate_policies.mjs",
+    "smoke": "node runner/smoke_test.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.57.0"
+  }
+}

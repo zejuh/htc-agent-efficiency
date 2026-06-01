@@ -1,0 +1,295 @@
+{
+  "suite_id": "soa-diagnostic-v2",
+  "description": "Observation-sensitive diagnostic suite for selective observation policies.",
+  "source_type": "local_diagnostic",
+  "recommended_use": "Use this as a controlled diagnostic stress suite. Pair it with an external benchmark such as WebArena or WorkArena for headline claims.",
+  "benchmark_alignment": [
+    "WebArena",
+    "VisualWebArena",
+    "WorkArena",
+    "OSWorld"
+  ],
+  "tasks": [
+    {
+      "task_id": "mail-send-update",
+      "benchmark": "soa-diagnostic",
+      "family": "static_baseline",
+      "difficulty": "atomic",
+      "tags": ["baseline", "mail", "checkpoint"],
+      "instruction": "Send Alice a short project update email.",
+      "success_status": "Email sent",
+      "actions": [
+        {"action_type": "click", "target": "#compose-btn", "risk": "safe", "may_change_screen": true},
+        {"action_type": "fill", "target": "#to-field", "text": "alice@example.com", "risk": "safe"},
+        {"action_type": "fill", "target": "#subject-field", "text": "Project update", "risk": "safe"},
+        {"action_type": "fill", "target": "#body-field", "text": "The project demo is ready for review.", "risk": "safe"},
+        {"action_type": "click", "target": "#send-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "shop-add-notebook",
+      "benchmark": "soa-diagnostic",
+      "family": "static_baseline",
+      "difficulty": "compositional",
+      "tags": ["baseline", "shop", "checkpoint"],
+      "instruction": "Find the blue notebook, add it to the cart, and open checkout.",
+      "success_status": "Checkout ready",
+      "actions": [
+        {"action_type": "fill", "target": "#shop-search", "text": "notebook", "risk": "safe"},
+        {"action_type": "check", "target": "#stock-filter", "risk": "safe"},
+        {"action_type": "click", "target": "#shop-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "#add-notebook", "risk": "state_changing", "checkpoint": true},
+        {"action_type": "click", "target": "#checkout-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "contacts-open-jordan",
+      "benchmark": "soa-diagnostic",
+      "family": "static_baseline",
+      "difficulty": "atomic",
+      "tags": ["baseline", "contacts"],
+      "instruction": "Search for Jordan Lee and open the contact card.",
+      "success_status": "Contact opened: Jordan Lee",
+      "actions": [
+        {"action_type": "fill", "target": "#contact-search", "text": "Jordan", "risk": "safe"},
+        {"action_type": "click", "target": "#contact-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "[data-contact='Jordan Lee']", "risk": "safe", "may_change_screen": true}
+      ]
+    },
+    {
+      "task_id": "settings-save-japanese",
+      "benchmark": "soa-diagnostic",
+      "family": "static_baseline",
+      "difficulty": "compositional",
+      "tags": ["baseline", "settings"],
+      "instruction": "Open preferences, enable compact mode, change language to Japanese, and save.",
+      "success_status": "Settings saved: Japanese",
+      "actions": [
+        {"action_type": "click", "target": "#open-settings", "risk": "safe", "may_change_screen": true},
+        {"action_type": "check", "target": "#compact-mode", "risk": "state_changing"},
+        {"action_type": "select", "target": "#language-select", "text": "Japanese", "risk": "state_changing"},
+        {"action_type": "click", "target": "#save-settings", "risk": "state_changing", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "files-rename-draft",
+      "benchmark": "soa-diagnostic",
+      "family": "static_baseline",
+      "difficulty": "compositional",
+      "tags": ["baseline", "files", "irreversible"],
+      "instruction": "Open the folder and rename draft.txt to final.txt.",
+      "success_status": "Renamed to final.txt",
+      "actions": [
+        {"action_type": "click", "target": "#open-files", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "[data-file='draft.txt']", "risk": "safe"},
+        {"action_type": "fill", "target": "#rename-field", "text": "final.txt", "risk": "irreversible"},
+        {"action_type": "click", "target": "#rename-btn", "risk": "irreversible", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "shop-add-notebook-async-fast",
+      "benchmark": "soa-diagnostic",
+      "family": "async_results",
+      "difficulty": "compositional",
+      "tags": ["async", "shop", "delay"],
+      "scenario": "async_shop",
+      "url_params": {"delay_ms": 350},
+      "instruction": "Find the blue notebook, add it to the cart, and open checkout. Search results may take a moment to load.",
+      "success_status": "Checkout ready",
+      "actions": [
+        {"action_type": "fill", "target": "#shop-search", "text": "notebook", "risk": "safe"},
+        {"action_type": "click", "target": "#shop-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "#add-notebook", "risk": "state_changing", "checkpoint": true},
+        {"action_type": "click", "target": "#checkout-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "shop-add-notebook-async-slow",
+      "benchmark": "soa-diagnostic",
+      "family": "async_results",
+      "difficulty": "adversarial",
+      "tags": ["async", "shop", "delay", "long_wait"],
+      "scenario": "async_shop",
+      "url_params": {"delay_ms": 900},
+      "instruction": "Find the blue notebook, add it to the cart, and open checkout. Results load slowly, so do not click a stale plan before the list is ready.",
+      "success_status": "Checkout ready",
+      "actions": [
+        {"action_type": "fill", "target": "#shop-search", "text": "notebook", "risk": "safe"},
+        {"action_type": "click", "target": "#shop-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "#add-notebook", "risk": "state_changing", "checkpoint": true},
+        {"action_type": "click", "target": "#checkout-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "contacts-open-jordan-async-fast",
+      "benchmark": "soa-diagnostic",
+      "family": "async_results",
+      "difficulty": "atomic",
+      "tags": ["async", "contacts"],
+      "scenario": "async_contacts",
+      "url_params": {"delay_ms": 350},
+      "instruction": "Search for Jordan Lee and open the contact card. Results may take a moment to load.",
+      "success_status": "Contact opened: Jordan Lee",
+      "actions": [
+        {"action_type": "fill", "target": "#contact-search", "text": "Jordan", "risk": "safe"},
+        {"action_type": "click", "target": "#contact-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "[data-contact='Jordan Lee']", "risk": "safe", "may_change_screen": true}
+      ]
+    },
+    {
+      "task_id": "contacts-open-jordan-async-slow",
+      "benchmark": "soa-diagnostic",
+      "family": "async_results",
+      "difficulty": "adversarial",
+      "tags": ["async", "contacts", "long_wait"],
+      "scenario": "async_contacts",
+      "url_params": {"delay_ms": 900},
+      "instruction": "Search for Jordan Lee and open the contact card. Results load slowly, so re-check before clicking into the contact.",
+      "success_status": "Contact opened: Jordan Lee",
+      "actions": [
+        {"action_type": "fill", "target": "#contact-search", "text": "Jordan", "risk": "safe"},
+        {"action_type": "click", "target": "#contact-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "[data-contact='Jordan Lee']", "risk": "safe", "may_change_screen": true}
+      ]
+    },
+    {
+      "task_id": "mail-send-suggested-alice",
+      "benchmark": "soa-diagnostic",
+      "family": "value_drift",
+      "difficulty": "compositional",
+      "tags": ["mail", "value_drift", "recipient"],
+      "scenario": "drift_recipient",
+      "url_params": {"delay_ms": 450, "recipient": "alice@example.com"},
+      "instruction": "Open the composer and send a short project update to the address shown in the Suggested recipient field. The suggestion may still be resolving when the composer opens; send only to the resolved address.",
+      "success_status": "Email sent",
+      "actions": [
+        {"action_type": "click", "target": "#compose-btn", "risk": "safe", "may_change_screen": true},
+        {"action_type": "fill", "target": "#to-field", "text": "alice@example.com", "risk": "safe"},
+        {"action_type": "fill", "target": "#subject-field", "text": "Project update", "risk": "safe"},
+        {"action_type": "fill", "target": "#body-field", "text": "The project demo is ready for review.", "risk": "safe"},
+        {"action_type": "click", "target": "#send-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "mail-send-suggested-finance",
+      "benchmark": "soa-diagnostic",
+      "family": "value_drift",
+      "difficulty": "adversarial",
+      "tags": ["mail", "value_drift", "recipient", "long_wait"],
+      "scenario": "drift_recipient",
+      "url_params": {"delay_ms": 950, "recipient": "finance@example.com"},
+      "instruction": "Open the composer and send a short project update to the address shown in the Suggested recipient field. The value changes late, so verify it fresh before sending.",
+      "success_status": "Email sent",
+      "actions": [
+        {"action_type": "click", "target": "#compose-btn", "risk": "safe", "may_change_screen": true},
+        {"action_type": "fill", "target": "#to-field", "text": "finance@example.com", "risk": "safe"},
+        {"action_type": "fill", "target": "#subject-field", "text": "Project update", "risk": "safe"},
+        {"action_type": "fill", "target": "#body-field", "text": "The project demo is ready for review.", "risk": "safe"},
+        {"action_type": "click", "target": "#send-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "mail-send-suggested-legal",
+      "benchmark": "soa-diagnostic",
+      "family": "value_drift",
+      "difficulty": "adversarial",
+      "tags": ["mail", "value_drift", "recipient"],
+      "scenario": "drift_recipient",
+      "url_params": {"delay_ms": 700, "recipient": "legal@example.com"},
+      "instruction": "Send the update only to the resolved Suggested recipient. The field value changes after the composer opens and must be copied exactly.",
+      "success_status": "Email sent",
+      "actions": [
+        {"action_type": "click", "target": "#compose-btn", "risk": "safe", "may_change_screen": true},
+        {"action_type": "fill", "target": "#to-field", "text": "legal@example.com", "risk": "safe"},
+        {"action_type": "fill", "target": "#subject-field", "text": "Project update", "risk": "safe"},
+        {"action_type": "fill", "target": "#body-field", "text": "The project demo is ready for review.", "risk": "safe"},
+        {"action_type": "click", "target": "#send-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "shop-notebook-price-drift-fast",
+      "benchmark": "soa-diagnostic",
+      "family": "value_drift",
+      "difficulty": "compositional",
+      "tags": ["shop", "value_drift", "price"],
+      "scenario": "price_drift",
+      "url_params": {"delay_ms": 450, "price_initial_cents": 1900, "price_resolved_cents": 700, "price_gate_cents": 700},
+      "instruction": "Search for the blue notebook. Only add it to the cart once its add button shows $7.00, then open checkout.",
+      "success_status": "Checkout ready",
+      "actions": [
+        {"action_type": "fill", "target": "#shop-search", "text": "notebook", "risk": "safe"},
+        {"action_type": "click", "target": "#shop-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "#add-notebook", "risk": "state_changing", "checkpoint": true},
+        {"action_type": "click", "target": "#checkout-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "shop-notebook-price-drift-slow",
+      "benchmark": "soa-diagnostic",
+      "family": "value_drift",
+      "difficulty": "adversarial",
+      "tags": ["shop", "value_drift", "price", "long_wait"],
+      "scenario": "price_drift",
+      "url_params": {"delay_ms": 950, "price_initial_cents": 2300, "price_resolved_cents": 900, "price_gate_cents": 900},
+      "instruction": "Search for the blue notebook. Wait until the add button shows $9.00 before adding it to the cart, then open checkout.",
+      "success_status": "Checkout ready",
+      "actions": [
+        {"action_type": "fill", "target": "#shop-search", "text": "notebook", "risk": "safe"},
+        {"action_type": "click", "target": "#shop-run-search", "risk": "safe", "may_change_screen": true},
+        {"action_type": "click", "target": "#add-notebook", "risk": "state_changing", "checkpoint": true},
+        {"action_type": "click", "target": "#checkout-btn", "risk": "external", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "settings-save-japanese-resolve",
+      "benchmark": "soa-diagnostic",
+      "family": "delayed_options",
+      "difficulty": "compositional",
+      "tags": ["settings", "options", "value_drift"],
+      "scenario": "resolve_language",
+      "url_params": {"delay_ms": 450, "target_language": "Japanese"},
+      "instruction": "Open preferences, enable compact mode, wait for the language list to finish loading, choose Japanese, and save.",
+      "success_status": "Settings saved: Japanese",
+      "actions": [
+        {"action_type": "click", "target": "#open-settings", "risk": "safe", "may_change_screen": true},
+        {"action_type": "check", "target": "#compact-mode", "risk": "state_changing"},
+        {"action_type": "select", "target": "#language-select", "text": "Japanese", "risk": "state_changing"},
+        {"action_type": "click", "target": "#save-settings", "risk": "state_changing", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "settings-save-german-resolve",
+      "benchmark": "soa-diagnostic",
+      "family": "delayed_options",
+      "difficulty": "adversarial",
+      "tags": ["settings", "options", "value_drift", "new_option"],
+      "scenario": "resolve_language",
+      "url_params": {"delay_ms": 800, "target_language": "German"},
+      "instruction": "Open preferences, enable compact mode, wait for the language list to finish loading, choose German, and save.",
+      "success_status": "Settings saved: German",
+      "actions": [
+        {"action_type": "click", "target": "#open-settings", "risk": "safe", "may_change_screen": true},
+        {"action_type": "check", "target": "#compact-mode", "risk": "state_changing"},
+        {"action_type": "select", "target": "#language-select", "text": "German", "risk": "state_changing"},
+        {"action_type": "click", "target": "#save-settings", "risk": "state_changing", "checkpoint": true}
+      ]
+    },
+    {
+      "task_id": "settings-save-french-resolve",
+      "benchmark": "soa-diagnostic",
+      "family": "delayed_options",
+      "difficulty": "adversarial",
+      "tags": ["settings", "options", "value_drift", "new_option", "long_wait"],
+      "scenario": "resolve_language",
+      "url_params": {"delay_ms": 1000, "target_language": "French"},
+      "instruction": "Open preferences, enable compact mode, wait for the language list to finish loading, choose French, and save.",
+      "success_status": "Settings saved: French",
+      "actions": [
+        {"action_type": "click", "target": "#open-settings", "risk": "safe", "may_change_screen": true},
+        {"action_type": "check", "target": "#compact-mode", "risk": "state_changing"},
+        {"action_type": "select", "target": "#language-select", "text": "French", "risk": "state_changing"},
+        {"action_type": "click", "target": "#save-settings", "risk": "state_changing", "checkpoint": true}
+      ]
+    }
+  ]
+}

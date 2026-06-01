@@ -1,0 +1,25 @@
+{
+  "recommended_headline_benchmarks": [
+    {
+      "id": "webarena",
+      "kind": "web",
+      "why": "Widely used open-ended web-agent benchmark with self-hosted sites and long-horizon tasks."
+    },
+    {
+      "id": "visualwebarena",
+      "kind": "web+vision",
+      "why": "Best fit when the paper wants to argue that fresh visual observations matter beyond DOM-only state."
+    },
+    {
+      "id": "workarena",
+      "kind": "enterprise_web",
+      "why": "Strong benchmark for productivity-agent framing and browser-based office workflows."
+    },
+    {
+      "id": "osworld",
+      "kind": "computer_use",
+      "why": "Best-known full computer-use benchmark when the paper wants the broadest external credibility."
+    }
+  ],
+  "diagnostic_role_of_this_repo": "This repository's local task suite is intended as a diagnostic stress suite for observation-sensitive failure modes, not as the final headline benchmark."
+}

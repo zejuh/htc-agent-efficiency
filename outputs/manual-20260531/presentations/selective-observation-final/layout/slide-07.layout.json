@@ -1,0 +1,591 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/ksafxd",
+    "id": "ksafxd",
+    "slide": 7,
+    "layoutId": "f12d28d8-1d65-4cbe-8c9d-304950a25e99",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "39837fea-98f2-49a5-aba7-8afa11a59657",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f12d28d8-1d65-4cbe-8c9d-304950a25e99",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "39837fea-98f2-49a5-aba7-8afa11a59657",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "39837fea-98f2-49a5-aba7-8afa11a59657",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F7F3EB",
+      "lineColor": "#F7F3EB",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "2",
+      "bbox": [
+        58,
+        46,
+        135,
+        28
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#0B1220",
+      "lineColor": "#0B1220",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "3",
+      "bbox": [
+        68,
+        52,
+        115,
+        16
+      ],
+      "geometry": "rect",
+      "text": "NEGATIVE RESULT",
+      "textPreview": "NEGATIVE RESULT",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "NEGATIVE RESULT"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "NEGATIVE RESULT",
+          "runs": [
+            {
+              "index": 1,
+              "text": "NEGATIVE RESULT",
+              "fontSize": 11,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "4",
+      "bbox": [
+        58,
+        92,
+        1060,
+        88
+      ],
+      "geometry": "rect",
+      "text": "The local diagnostic suite is intentionally hard, and the learned gate mostly collapses toward ‘observe a lot’.",
+      "textPreview": "The local diagnostic suite is intentionally hard, and the learned gate mostly collapses toward ‘observe a lot’.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Aptos Display",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The local diagnostic suite is intentionally hard, and the learned gate"
+          },
+          {
+            "index": 2,
+            "text": "mostly collapses toward ‘observe a lot’."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The local diagnostic suite is intentionally hard, and the learned gate mostly collapses toward ‘observe a lot’.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The local diagnostic suite is intentionally hard, and the learned gate mostly collapses toward ‘observe a lot’.",
+              "fontSize": 30,
+              "typeface": "Aptos Display",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "5",
+      "bbox": [
+        58,
+        174,
+        1040,
+        52
+      ],
+      "geometry": "rect",
+      "text": "This is still a useful result: cheap features alone are not enough when 93% of labels say observation is necessary.",
+      "textPreview": "This is still a useful result: cheap features alone are not enough when 93% of labels say observation is necessary.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "This is still a useful result: cheap features alone are not enough when 93% of labels say observation is necessary."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "This is still a useful result: cheap features alone are not enough when 93% of labels say observation is necessary.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "This is still a useful result: cheap features alone are not enough when 93% of labels say observation is necessary.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/za1gvy90",
+      "id": "6",
+      "bbox": [
+        58,
+        242,
+        690,
+        340
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "52ac0dbd-516f-4052-8628-70132cbb7cc9",
+        "contentType": "image/png",
+        "byteLength": 61807
+      }
+    },
+    {
+      "order": 7,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/ap4r65wj",
+      "id": "7",
+      "bbox": [
+        784,
+        252,
+        414,
+        242
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "dd1a170a-7a49-4f82-a86c-df82d1e9ccf0",
+        "contentType": "image/png",
+        "byteLength": 32297
+      }
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "8",
+      "bbox": [
+        784,
+        514,
+        414,
+        124
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF8",
+      "lineColor": "#D6D3D1",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87ed8ba",
+      "id": "9",
+      "bbox": [
+        808,
+        536,
+        220,
+        22
+      ],
+      "geometry": "rect",
+      "text": "What the negative result means",
+      "textPreview": "What the negative result means",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "What the negative result"
+          },
+          {
+            "index": 2,
+            "text": "means"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "What the negative result means",
+          "runs": [
+            {
+              "index": 1,
+              "text": "What the negative result means",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "10",
+      "bbox": [
+        808,
+        570,
+        354,
+        54
+      ],
+      "geometry": "rect",
+      "text": "The diagnostic suite did its job: it created many cases where stale plans really are dangerous. The next research step is not to abandon the idea, but to add richer state features or memory-aware policies.",
+      "textPreview": "The diagnostic suite did its job: it created many cases where stale plans really are dangerous. The next research step is not to abandon ...",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The diagnostic suite did its job: it created many cases where"
+          },
+          {
+            "index": 2,
+            "text": "stale plans really are dangerous. The next research step is"
+          },
+          {
+            "index": 3,
+            "text": "not to abandon the idea, but to add richer state features or"
+          },
+          {
+            "index": 4,
+            "text": "memory-aware policies."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The diagnostic suite did its job: it created many cases where stale plans really are dangerous. The next research step is not to abandon the idea, but to add richer state features or memory-aware policies.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The diagnostic suite did its job: it created many cases where stale plans really are dangerous. The next research step is not to abandon the idea, but to add richer state features or memory-aware policies.",
+              "fontSize": 13,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "11",
+      "bbox": [
+        58,
+        686,
+        1164,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D6D3D1",
+      "lineColor": "#D6D3D1",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "12",
+      "bbox": [
+        58,
+        692,
+        40,
+        18
+      ],
+      "geometry": "rect",
+      "text": "07",
+      "textPreview": "07",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "07",
+          "runs": [
+            {
+              "index": 1,
+              "text": "07",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "13",
+      "bbox": [
+        120,
+        692,
+        930,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Hard local suite = informative negative result",
+      "textPreview": "Hard local suite = informative negative result",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Hard local suite = informative negative result"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Hard local suite = informative negative result",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Hard local suite = informative negative result",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5sneloj2",
+      "id": "14",
+      "bbox": [
+        1035,
+        692,
+        190,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Selective Observation Agent",
+      "textPreview": "Selective Observation Agent",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Selective Observation Agent"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Selective Observation Agent",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Selective Observation Agent",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

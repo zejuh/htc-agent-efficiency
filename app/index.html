@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Selective-Observation Agent Tasks</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>SOA Browser Tasks</h1>
+        <p id="task-label">Ready</p>
+      </div>
+      <output id="status" aria-live="polite">No task started</output>
+    </header>
+
+    <main>
+      <section class="workspace" data-app="mail">
+        <div class="pane">
+          <h2>MailDesk</h2>
+          <button id="compose-btn">Compose</button>
+          <div class="inbox">
+            <button class="mail-row">Project update</button>
+            <button class="mail-row">Receipt</button>
+          </div>
+        </div>
+        <form id="composer" class="panel hidden">
+          <label>To <input id="to-field" autocomplete="off"></label>
+          <label>Suggested recipient <input id="suggested-recipient" readonly></label>
+          <label>Subject <input id="subject-field" autocomplete="off"></label>
+          <label>Body <textarea id="body-field"></textarea></label>
+          <button id="send-btn" type="button">Send</button>
+        </form>
+      </section>
+
+      <section class="workspace" data-app="shop">
+        <div class="pane">
+          <h2>Northstar Shop</h2>
+          <label>Search <input id="shop-search" autocomplete="off"></label>
+          <label class="inline"><input id="stock-filter" type="checkbox"> In stock only</label>
+          <button id="shop-run-search">Search</button>
+        </div>
+        <div id="product-list" class="panel">
+          <article class="product" data-name="Blue Notebook" data-stock="true">
+            <h3>Blue Notebook</h3>
+            <p>College ruled, 120 pages</p>
+            <button id="add-notebook">Add to cart</button>
+          </article>
+          <article class="product" data-name="Desk Lamp" data-stock="false">
+            <h3>Desk Lamp</h3>
+            <p>Backordered</p>
+            <button disabled>Add to cart</button>
+          </article>
+        </div>
+        <aside class="cart">
+          <h3>Cart</h3>
+          <p id="cart-count">0 items</p>
+          <button id="checkout-btn">Checkout</button>
+        </aside>
+      </section>
+
+      <section class="workspace" data-app="contacts">
+        <div class="pane">
+          <h2>People</h2>
+          <label>Find contact <input id="contact-search" autocomplete="off"></label>
+          <button id="contact-run-search">Search</button>
+        </div>
+        <div id="contact-results" class="panel">
+          <button class="contact-row" data-contact="Jordan Lee">Jordan Lee - Design</button>
+          <button class="contact-row" data-contact="Mina Rao">Mina Rao - Finance</button>
+        </div>
+        <article id="contact-detail" class="panel">
+          <h3>No contact selected</h3>
+          <p>Open a contact to view details.</p>
+        </article>
+      </section>
+
+      <section class="workspace" data-app="settings">
+        <div class="pane">
+          <h2>Settings</h2>
+          <button id="open-settings">Open Preferences</button>
+        </div>
+        <form id="settings-panel" class="panel hidden">
+          <label class="inline"><input id="compact-mode" type="checkbox"> Compact mode</label>
+          <label>Language
+            <select id="language-select">
+              <option>English</option>
+              <option>Spanish</option>
+              <option>Japanese</option>
+            </select>
+          </label>
+          <button id="save-settings" type="button">Save changes</button>
+        </form>
+      </section>
+
+      <section class="workspace" data-app="files">
+        <div class="pane">
+          <h2>Files</h2>
+          <button id="open-files">Open folder</button>
+        </div>
+        <div id="file-panel" class="panel hidden">
+          <button class="file-row" data-file="draft.txt">draft.txt</button>
+          <button class="file-row" data-file="notes.txt">notes.txt</button>
+          <label>Rename to <input id="rename-field" autocomplete="off"></label>
+          <button id="rename-btn">Rename</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

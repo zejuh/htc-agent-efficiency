@@ -1,0 +1,1229 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/pjqngw",
+    "id": "pjqngw",
+    "slide": 4,
+    "layoutId": "f12d28d8-1d65-4cbe-8c9d-304950a25e99",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "39837fea-98f2-49a5-aba7-8afa11a59657",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f12d28d8-1d65-4cbe-8c9d-304950a25e99",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "39837fea-98f2-49a5-aba7-8afa11a59657",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "39837fea-98f2-49a5-aba7-8afa11a59657",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nuxc3ylc",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F7F3EB",
+      "lineColor": "#F7F3EB",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbq1oryt",
+      "id": "2",
+      "bbox": [
+        58,
+        46,
+        120,
+        28
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#0B1220",
+      "lineColor": "#0B1220",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wjudg7a",
+      "id": "3",
+      "bbox": [
+        68,
+        52,
+        100,
+        16
+      ],
+      "geometry": "rect",
+      "text": "BENCHMARKS",
+      "textPreview": "BENCHMARKS",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "BENCHMARKS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "BENCHMARKS",
+          "runs": [
+            {
+              "index": 1,
+              "text": "BENCHMARKS",
+              "fontSize": 11,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yhgn29gr",
+      "id": "4",
+      "bbox": [
+        58,
+        92,
+        1060,
+        88
+      ],
+      "geometry": "rect",
+      "text": "We intentionally separate a diagnostic suite from the external benchmark.",
+      "textPreview": "We intentionally separate a diagnostic suite from the external benchmark.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Aptos Display",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "We intentionally separate a diagnostic suite from the external benchmark."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "We intentionally separate a diagnostic suite from the external benchmark.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "We intentionally separate a diagnostic suite from the external benchmark.",
+              "fontSize": 30,
+              "typeface": "Aptos Display",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n29gr2p8",
+      "id": "5",
+      "bbox": [
+        58,
+        174,
+        1040,
+        52
+      ],
+      "geometry": "rect",
+      "text": "That gives us one environment for controlled stress tests and one environment for credibility.",
+      "textPreview": "That gives us one environment for controlled stress tests and one environment for credibility.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "That gives us one environment for controlled stress tests and one environment for credibility."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "That gives us one environment for controlled stress tests and one environment for credibility.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "That gives us one environment for controlled stress tests and one environment for credibility.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gn29gr2p",
+      "id": "6",
+      "bbox": [
+        58,
+        246,
+        548,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF8",
+      "lineColor": "#D6D3D1",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/58z25kb6",
+      "id": "7",
+      "bbox": [
+        76,
+        262,
+        512,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Local diagnostic suite (17 tasks)",
+      "textPreview": "Local diagnostic suite (17 tasks)",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Local diagnostic suite (17 tasks)"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Local diagnostic suite (17 tasks)",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Local diagnostic suite (17 tasks)",
+              "fontSize": 16,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "8",
+      "bbox": [
+        76,
+        292,
+        512,
+        300
+      ],
+      "geometry": "rect",
+      "text": "Purpose: controlled observation-sensitive stress testing\nFamilies: static baseline, async results, value drift, delayed options\nWhy it is useful: we can manufacture hard cases where coarse screen change misses the real state shift\nExample tasks: async contact resolution, notebook price drift, delayed language options",
+      "textPreview": "Purpose: controlled observation-sensitive stress testing | Families: static baseline, async results, value drift, delayed options | Why i...",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Purpose: controlled observation-sensitive stress testing"
+          },
+          {
+            "index": 2,
+            "text": "Families: static baseline, async results, value drift, delayed options"
+          },
+          {
+            "index": 3,
+            "text": "Why it is useful: we can manufacture hard cases where coarse screen"
+          },
+          {
+            "index": 4,
+            "text": "change misses the real state shift"
+          },
+          {
+            "index": 5,
+            "text": "Example tasks: async contact resolution, notebook price drift, delayed"
+          },
+          {
+            "index": 6,
+            "text": "language options"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Purpose: controlled observation-sensitive stress testing",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Purpose: controlled observation-sensitive stress testing",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Families: static baseline, async results, value drift, delayed options",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Families: static baseline, async results, value drift, delayed options",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "Why it is useful: we can manufacture hard cases where coarse screen change misses the real state shift",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Why it is useful: we can manufacture hard cases where coarse screen change misses the real state shift",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "text": "Example tasks: async contact resolution, notebook price drift, delayed language options",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Example tasks: async contact resolution, notebook price drift, delayed language options",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "9",
+      "bbox": [
+        86,
+        436,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#A16207",
+      "lineColor": "#A16207",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "10",
+      "bbox": [
+        106,
+        430,
+        450,
+        38
+      ],
+      "geometry": "rect",
+      "text": "5 static baselines",
+      "textPreview": "5 static baselines",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "5 static baselines"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "5 static baselines",
+          "runs": [
+            {
+              "index": 1,
+              "text": "5 static baselines",
+              "fontSize": 14,
+              "typeface": "Aptos",
+              "color": "#111827"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "11",
+      "bbox": [
+        86,
+        478,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#A16207",
+      "lineColor": "#A16207",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "12",
+      "bbox": [
+        106,
+        472,
+        450,
+        38
+      ],
+      "geometry": "rect",
+      "text": "4 async result tasks",
+      "textPreview": "4 async result tasks",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "4 async result tasks"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "4 async result tasks",
+          "runs": [
+            {
+              "index": 1,
+              "text": "4 async result tasks",
+              "fontSize": 14,
+              "typeface": "Aptos",
+              "color": "#111827"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "13",
+      "bbox": [
+        86,
+        520,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#A16207",
+      "lineColor": "#A16207",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "14",
+      "bbox": [
+        106,
+        514,
+        450,
+        38
+      ],
+      "geometry": "rect",
+      "text": "5 value-drift tasks",
+      "textPreview": "5 value-drift tasks",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "5 value-drift tasks"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "5 value-drift tasks",
+          "runs": [
+            {
+              "index": 1,
+              "text": "5 value-drift tasks",
+              "fontSize": 14,
+              "typeface": "Aptos",
+              "color": "#111827"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "15",
+      "bbox": [
+        86,
+        562,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#A16207",
+      "lineColor": "#A16207",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "16",
+      "bbox": [
+        106,
+        556,
+        450,
+        38
+      ],
+      "geometry": "rect",
+      "text": "3 delayed-option tasks",
+      "textPreview": "3 delayed-option tasks",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "3 delayed-option tasks"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "3 delayed-option tasks",
+          "runs": [
+            {
+              "index": 1,
+              "text": "3 delayed-option tasks",
+              "fontSize": 14,
+              "typeface": "Aptos",
+              "color": "#111827"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "17",
+      "bbox": [
+        638,
+        246,
+        584,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#0B1220",
+      "lineColor": "#0B1220",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/judg7ads",
+      "id": "18",
+      "bbox": [
+        666,
+        272,
+        430,
+        26
+      ],
+      "geometry": "rect",
+      "text": "MiniWoB curated external benchmark (10 instances)",
+      "textPreview": "MiniWoB curated external benchmark (10 instances)",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MiniWoB curated external benchmark (10 instances)"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MiniWoB curated external benchmark (10 instances)",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MiniWoB curated external benchmark (10 instances)",
+              "fontSize": 16,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "19",
+      "bbox": [
+        666,
+        314,
+        504,
+        192
+      ],
+      "geometry": "rect",
+      "text": "Purpose: show that the same observation-policy core runs on a recognized community benchmark.\n\nCurated tasks:\nclick-button\nfocus-text\nclick-option\nclick-checkboxes\nclick-button-sequence\n\nWe duplicated selected tasks with two seeds to make the subset slightly less fragile.",
+      "textPreview": "Purpose: show that the same observation-policy core runs on a recognized community benchmark. |  | Curated tasks: | click-button | focus-...",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 12,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Purpose: show that the same observation-policy core runs on a recognized"
+          },
+          {
+            "index": 2,
+            "text": "community benchmark."
+          },
+          {
+            "index": 3,
+            "text": ""
+          },
+          {
+            "index": 4,
+            "text": "Curated tasks:"
+          },
+          {
+            "index": 5,
+            "text": "click-button"
+          },
+          {
+            "index": 6,
+            "text": "focus-text"
+          },
+          {
+            "index": 7,
+            "text": "click-option"
+          },
+          {
+            "index": 8,
+            "text": "click-checkboxes"
+          },
+          {
+            "index": 9,
+            "text": "click-button-sequence"
+          },
+          {
+            "index": 10,
+            "text": ""
+          },
+          {
+            "index": 11,
+            "text": "We duplicated selected tasks with two seeds to make the subset slightly"
+          },
+          {
+            "index": 12,
+            "text": "less fragile."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Purpose: show that the same observation-policy core runs on a recognized community benchmark.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Purpose: show that the same observation-policy core runs on a recognized community benchmark.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "Curated tasks:",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Curated tasks:",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "text": "click-button",
+          "runs": [
+            {
+              "index": 1,
+              "text": "click-button",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "text": "focus-text",
+          "runs": [
+            {
+              "index": 1,
+              "text": "focus-text",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "text": "click-option",
+          "runs": [
+            {
+              "index": 1,
+              "text": "click-option",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "text": "click-checkboxes",
+          "runs": [
+            {
+              "index": 1,
+              "text": "click-checkboxes",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "text": "click-button-sequence",
+          "runs": [
+            {
+              "index": 1,
+              "text": "click-button-sequence",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "text": "We duplicated selected tasks with two seeds to make the subset slightly less fragile.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "We duplicated selected tasks with two seeds to make the subset slightly less fragile.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hwfyxob",
+      "id": "20",
+      "bbox": [
+        666,
+        524,
+        220,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Final evaluation framing",
+      "textPreview": "Final evaluation framing",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Final evaluation framing"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Final evaluation framing",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Final evaluation framing",
+              "fontSize": 13,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2p8nqxs",
+      "id": "21",
+      "bbox": [
+        666,
+        550,
+        470,
+        42
+      ],
+      "geometry": "rect",
+      "text": "External benchmark = headline result\nLocal diagnostic suite = negative result + why cheap features are not enough",
+      "textPreview": "External benchmark = headline result | Local diagnostic suite = negative result + why cheap features are not enough",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "External benchmark = headline result"
+          },
+          {
+            "index": 2,
+            "text": "Local diagnostic suite = negative result + why cheap features are not"
+          },
+          {
+            "index": 3,
+            "text": "enough"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "External benchmark = headline result",
+          "runs": [
+            {
+              "index": 1,
+              "text": "External benchmark = headline result",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#CBD5E1"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Local diagnostic suite = negative result + why cheap features are not enough",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Local diagnostic suite = negative result + why cheap features are not enough",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#CBD5E1"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kjm1cfa9",
+      "id": "22",
+      "bbox": [
+        58,
+        686,
+        1164,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D6D3D1",
+      "lineColor": "#D6D3D1",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/94fu18jq",
+      "id": "23",
+      "bbox": [
+        58,
+        692,
+        40,
+        18
+      ],
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "24",
+      "bbox": [
+        120,
+        692,
+        930,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Benchmark design",
+      "textPreview": "Benchmark design",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Benchmark design"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Benchmark design",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Benchmark design",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ra5gbq1o",
+      "id": "25",
+      "bbox": [
+        1035,
+        692,
+        190,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Selective Observation Agent",
+      "textPreview": "Selective Observation Agent",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Selective Observation Agent"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Selective Observation Agent",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Selective Observation Agent",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

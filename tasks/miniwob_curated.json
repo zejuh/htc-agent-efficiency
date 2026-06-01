@@ -1,0 +1,125 @@
+{
+  "suite_id": "miniwob_curated_v1",
+  "description": "Curated MiniWoB++ subset used for the final report. It favors tasks that are stable under the current browser-agent action space while still exposing a meaningful observation-planning tradeoff.",
+  "source_type": "external_benchmark_subset",
+  "recommended_use": "Use this suite as the report-ready external benchmark. The broader bridge suite remains available for development and adapter validation.",
+  "benchmark_alignment": [
+    {
+      "name": "MiniWoB++",
+      "url": "https://github.com/Farama-Foundation/miniwob-plusplus",
+      "role": "Curated external benchmark"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "miniwob-click-button-s7",
+      "instruction": "Solve the MiniWoB++ click-button task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "single_step_click",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "click", "curated"],
+      "subdomain": "click-button",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-click-button-s11",
+      "instruction": "Solve the MiniWoB++ click-button task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "single_step_click",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "click", "curated"],
+      "subdomain": "click-button",
+      "seed": 11
+    },
+    {
+      "task_id": "miniwob-focus-text-s7",
+      "instruction": "Solve the MiniWoB++ focus-text task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "single_step_focus",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "focus", "curated"],
+      "subdomain": "focus-text",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-focus-text-s11",
+      "instruction": "Solve the MiniWoB++ focus-text task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "single_step_focus",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "focus", "curated"],
+      "subdomain": "focus-text",
+      "seed": 11
+    },
+    {
+      "task_id": "miniwob-click-option-s7",
+      "instruction": "Solve the MiniWoB++ click-option task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_check",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "radio", "submit", "curated"],
+      "subdomain": "click-option",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-click-option-s11",
+      "instruction": "Solve the MiniWoB++ click-option task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_check",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "radio", "submit", "curated"],
+      "subdomain": "click-option",
+      "seed": 11
+    },
+    {
+      "task_id": "miniwob-click-checkboxes-s7",
+      "instruction": "Solve the MiniWoB++ click-checkboxes task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_check",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "checkbox", "submit", "curated"],
+      "subdomain": "click-checkboxes",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-click-checkboxes-s11",
+      "instruction": "Solve the MiniWoB++ click-checkboxes task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_check",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "checkbox", "submit", "curated"],
+      "subdomain": "click-checkboxes",
+      "seed": 11
+    },
+    {
+      "task_id": "miniwob-click-button-sequence-s7",
+      "instruction": "Solve the MiniWoB++ click-button-sequence task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "multi_step_click",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "sequence", "curated"],
+      "subdomain": "click-button-sequence",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-click-button-sequence-s11",
+      "instruction": "Solve the MiniWoB++ click-button-sequence task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "multi_step_click",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "sequence", "curated"],
+      "subdomain": "click-button-sequence",
+      "seed": 11
+    }
+  ]
+}

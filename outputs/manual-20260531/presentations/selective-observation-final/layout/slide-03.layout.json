@@ -1,0 +1,1375 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/yfkyda",
+    "id": "yfkyda",
+    "slide": 3,
+    "layoutId": "f12d28d8-1d65-4cbe-8c9d-304950a25e99",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "39837fea-98f2-49a5-aba7-8afa11a59657",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f12d28d8-1d65-4cbe-8c9d-304950a25e99",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "39837fea-98f2-49a5-aba7-8afa11a59657",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "39837fea-98f2-49a5-aba7-8afa11a59657",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y90je9cv",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F7F3EB",
+      "lineColor": "#F7F3EB",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wjudg7a",
+      "id": "2",
+      "bbox": [
+        58,
+        46,
+        120,
+        28
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#0B1220",
+      "lineColor": "#0B1220",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbq1oryt",
+      "id": "3",
+      "bbox": [
+        68,
+        52,
+        100,
+        16
+      ],
+      "geometry": "rect",
+      "text": "METHOD",
+      "textPreview": "METHOD",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "METHOD"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "METHOD",
+          "runs": [
+            {
+              "index": 1,
+              "text": "METHOD",
+              "fontSize": 11,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n29gr2p8",
+      "id": "4",
+      "bbox": [
+        58,
+        92,
+        1060,
+        88
+      ],
+      "geometry": "rect",
+      "text": "We turned the repo into a benchmark-first selective-observation framework.",
+      "textPreview": "We turned the repo into a benchmark-first selective-observation framework.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Aptos Display",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "We turned the repo into a benchmark-first selective-observation"
+          },
+          {
+            "index": 2,
+            "text": "framework."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "We turned the repo into a benchmark-first selective-observation framework.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "We turned the repo into a benchmark-first selective-observation framework.",
+              "fontSize": 30,
+              "typeface": "Aptos Display",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yhgn29gr",
+      "id": "5",
+      "bbox": [
+        58,
+        174,
+        1040,
+        52
+      ],
+      "geometry": "rect",
+      "text": "The observation gate is the reusable core; environments plug in through adapters.",
+      "textPreview": "The observation gate is the reusable core; environments plug in through adapters.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The observation gate is the reusable core; environments plug in through adapters."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The observation gate is the reusable core; environments plug in through adapters.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The observation gate is the reusable core; environments plug in through adapters.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/58z25kb6",
+      "id": "6",
+      "bbox": [
+        76,
+        256,
+        170,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#E0F2FE",
+      "lineColor": "#7DD3FC",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gn29gr2p",
+      "id": "7",
+      "bbox": [
+        98,
+        286,
+        130,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Task suite\nlocal diagnostic\nor MiniWoB",
+      "textPreview": "Task suite | local diagnostic | or MiniWoB",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Task suite"
+          },
+          {
+            "index": 2,
+            "text": "local"
+          },
+          {
+            "index": 3,
+            "text": "diagnostic"
+          },
+          {
+            "index": 4,
+            "text": "or MiniWoB"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Task suite",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Task suite",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "local diagnostic",
+          "runs": [
+            {
+              "index": 1,
+              "text": "local diagnostic",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "or MiniWoB",
+          "runs": [
+            {
+              "index": 1,
+              "text": "or MiniWoB",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "8",
+      "bbox": [
+        290,
+        256,
+        180,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#ECFCCB",
+      "lineColor": "#A3E635",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "9",
+      "bbox": [
+        314,
+        280,
+        132,
+        64
+      ],
+      "geometry": "rect",
+      "text": "Adapter layer\nreset / observe /\nexecute / success",
+      "textPreview": "Adapter layer | reset / observe / | execute / success",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Adapter layer"
+          },
+          {
+            "index": 2,
+            "text": "reset /"
+          },
+          {
+            "index": 3,
+            "text": "observe /"
+          },
+          {
+            "index": 4,
+            "text": "execute /"
+          },
+          {
+            "index": 5,
+            "text": "success"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Adapter layer",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Adapter layer",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "reset / observe /",
+          "runs": [
+            {
+              "index": 1,
+              "text": "reset / observe /",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "execute / success",
+          "runs": [
+            {
+              "index": 1,
+              "text": "execute / success",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83itgfml",
+      "id": "10",
+      "bbox": [
+        520,
+        256,
+        210,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FEF3C7",
+      "lineColor": "#F59E0B",
+      "lineWidth": 1
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xobm58z2",
+      "id": "11",
+      "bbox": [
+        544,
+        280,
+        162,
+        64
+      ],
+      "geometry": "rect",
+      "text": "Planner\nOpenAI agent plans\nshort action sequences",
+      "textPreview": "Planner | OpenAI agent plans | short action sequences",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Planner"
+          },
+          {
+            "index": 2,
+            "text": "OpenAI agent"
+          },
+          {
+            "index": 3,
+            "text": "plans"
+          },
+          {
+            "index": 4,
+            "text": "short action"
+          },
+          {
+            "index": 5,
+            "text": "sequences"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Planner",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Planner",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "OpenAI agent plans",
+          "runs": [
+            {
+              "index": 1,
+              "text": "OpenAI agent plans",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "short action sequences",
+          "runs": [
+            {
+              "index": 1,
+              "text": "short action sequences",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qxs72x4n",
+      "id": "12",
+      "bbox": [
+        786,
+        256,
+        170,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D1FAE5",
+      "lineColor": "#34D399",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fil0rqd4",
+      "id": "13",
+      "bbox": [
+        806,
+        280,
+        130,
+        64
+      ],
+      "geometry": "rect",
+      "text": "Observation gate\ncheap features ->\nobserve or coast",
+      "textPreview": "Observation gate | cheap features -> | observe or coast",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Observation"
+          },
+          {
+            "index": 2,
+            "text": "gate"
+          },
+          {
+            "index": 3,
+            "text": "cheap"
+          },
+          {
+            "index": 4,
+            "text": "features ->"
+          },
+          {
+            "index": 5,
+            "text": "observe or"
+          },
+          {
+            "index": 6,
+            "text": "coast"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Observation gate",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Observation gate",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "cheap features ->",
+          "runs": [
+            {
+              "index": 1,
+              "text": "cheap features ->",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "observe or coast",
+          "runs": [
+            {
+              "index": 1,
+              "text": "observe or coast",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fu18jqh",
+      "id": "14",
+      "bbox": [
+        1004,
+        256,
+        180,
+        112
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FCE7F3",
+      "lineColor": "#F472B6",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0nuxc3y",
+      "id": "15",
+      "bbox": [
+        1028,
+        280,
+        132,
+        64
+      ],
+      "geometry": "rect",
+      "text": "Evaluator\nsuccess, calls,\ncost, latency, unsafe",
+      "textPreview": "Evaluator | success, calls, | cost, latency, unsafe",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Evaluator"
+          },
+          {
+            "index": 2,
+            "text": "success, calls,"
+          },
+          {
+            "index": 3,
+            "text": "cost, latency,"
+          },
+          {
+            "index": 4,
+            "text": "unsafe"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Evaluator",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Evaluator",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "success, calls,",
+          "runs": [
+            {
+              "index": 1,
+              "text": "success, calls,",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "cost, latency, unsafe",
+          "runs": [
+            {
+              "index": 1,
+              "text": "cost, latency, unsafe",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m94fu18j",
+      "id": "16",
+      "bbox": [
+        246,
+        311,
+        44,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#475569",
+      "lineColor": "#475569",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fu18jqh0",
+      "id": "17",
+      "bbox": [
+        470,
+        311,
+        50,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#475569",
+      "lineColor": "#475569",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4r65wjud",
+      "id": "18",
+      "bbox": [
+        730,
+        311,
+        56,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#475569",
+      "lineColor": "#475569",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xc3ylc7u",
+      "id": "19",
+      "bbox": [
+        956,
+        311,
+        48,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#475569",
+      "lineColor": "#475569",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "20",
+      "bbox": [
+        76,
+        430,
+        520,
+        188
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF8",
+      "lineColor": "#D6D3D1",
+      "lineWidth": 1
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "21",
+      "bbox": [
+        100,
+        454,
+        300,
+        24
+      ],
+      "geometry": "rect",
+      "text": "What changed in the codebase",
+      "textPreview": "What changed in the codebase",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "What changed in the codebase"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "What changed in the codebase",
+          "runs": [
+            {
+              "index": 1,
+              "text": "What changed in the codebase",
+              "fontSize": 16,
+              "typeface": "Aptos",
+              "color": "#111827",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "22",
+      "bbox": [
+        100,
+        494,
+        450,
+        112
+      ],
+      "geometry": "rect",
+      "text": "1. Added a generic adapter interface so the same collector/evaluator can drive both the local app and MiniWoB.\n2. Upgraded the gate trainer from logistic-only to logistic-or-MLP auto-selection.\n3. Added task-suite manifests, benchmark metadata, and bootstrap confidence intervals.",
+      "textPreview": "1. Added a generic adapter interface so the same collector/evaluator can drive both the local app and MiniWoB. | 2. Upgraded the gate tra...",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "1. Added a generic adapter interface so the same"
+          },
+          {
+            "index": 2,
+            "text": "collector/evaluator can drive both the local app and MiniWoB."
+          },
+          {
+            "index": 3,
+            "text": "2. Upgraded the gate trainer from logistic-only to logistic-or-MLP"
+          },
+          {
+            "index": 4,
+            "text": "auto-selection."
+          },
+          {
+            "index": 5,
+            "text": "3. Added task-suite manifests, benchmark metadata, and"
+          },
+          {
+            "index": 6,
+            "text": "bootstrap confidence intervals."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "1. Added a generic adapter interface so the same collector/evaluator can drive both the local app and MiniWoB.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "1. Added a generic adapter interface so the same collector/evaluator can drive both the local app and MiniWoB.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#111827"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "2. Upgraded the gate trainer from logistic-only to logistic-or-MLP auto-selection.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "2. Upgraded the gate trainer from logistic-only to logistic-or-MLP auto-selection.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#111827"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "3. Added task-suite manifests, benchmark metadata, and bootstrap confidence intervals.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "3. Added task-suite manifests, benchmark metadata, and bootstrap confidence intervals.",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#111827"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "23",
+      "bbox": [
+        626,
+        430,
+        558,
+        188
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#0B1220",
+      "lineColor": "#0B1220",
+      "lineWidth": 1
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "24",
+      "bbox": [
+        652,
+        454,
+        220,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Training loop",
+      "textPreview": "Training loop",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Training loop"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Training loop",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Training loop",
+              "fontSize": 16,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "25",
+      "bbox": [
+        652,
+        494,
+        484,
+        112
+      ],
+      "geometry": "rect",
+      "text": "Round 0: always-observe oracle collection\nRound 1: collect under learned@0.5 (DAgger)\nTrain gate on cheap observation features\nSweep thresholds at evaluation time to trace a cost/success frontier",
+      "textPreview": "Round 0: always-observe oracle collection | Round 1: collect under learned@0.5 (DAgger) | Train gate on cheap observation features | Swee...",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Round 0: always-observe oracle collection"
+          },
+          {
+            "index": 2,
+            "text": "Round 1: collect under learned@0.5 (DAgger)"
+          },
+          {
+            "index": 3,
+            "text": "Train gate on cheap observation features"
+          },
+          {
+            "index": 4,
+            "text": "Sweep thresholds at evaluation time to trace a cost/success frontier"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Round 0: always-observe oracle collection",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Round 0: always-observe oracle collection",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Round 1: collect under learned@0.5 (DAgger)",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Round 1: collect under learned@0.5 (DAgger)",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "Train gate on cheap observation features",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Train gate on cheap observation features",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "text": "Sweep thresholds at evaluation time to trace a cost/success frontier",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sweep thresholds at evaluation time to trace a cost/success frontier",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#E5E7EB"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "26",
+      "bbox": [
+        58,
+        686,
+        1164,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D6D3D1",
+      "lineColor": "#D6D3D1",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "27",
+      "bbox": [
+        58,
+        692,
+        40,
+        18
+      ],
+      "geometry": "rect",
+      "text": "03",
+      "textPreview": "03",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03",
+          "runs": [
+            {
+              "index": 1,
+              "text": "03",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gvy90je",
+      "id": "28",
+      "bbox": [
+        120,
+        692,
+        930,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Architecture and code contributions",
+      "textPreview": "Architecture and code contributions",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Architecture and code contributions"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Architecture and code contributions",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Architecture and code contributions",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8z25kb6x",
+      "id": "29",
+      "bbox": [
+        1035,
+        692,
+        190,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Selective Observation Agent",
+      "textPreview": "Selective Observation Agent",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Aptos",
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Selective Observation Agent"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Selective Observation Agent",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Selective Observation Agent",
+              "fontSize": 10.51,
+              "typeface": "Aptos",
+              "color": "#475569"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

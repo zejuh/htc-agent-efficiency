@@ -1,0 +1,92 @@
+{
+  "suite_id": "miniwob_observation_bridge_v1",
+  "description": "A small external MiniWoB++ bridge suite used to demonstrate that the selective-observation policy runs on a community benchmark rather than only a custom local app.",
+  "source_type": "external_benchmark_subset",
+  "recommended_use": "Use this suite as the headline external benchmark in class presentations, and pair it with the local diagnostic suite for observation-sensitive failure analysis.",
+  "benchmark_alignment": [
+    {
+      "name": "MiniWoB++",
+      "url": "https://github.com/Farama-Foundation/miniwob-plusplus",
+      "role": "External benchmark subset"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "miniwob-click-button",
+      "instruction": "Solve the MiniWoB++ click-button task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "single_step_click",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "click"],
+      "subdomain": "click-button",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-choose-list",
+      "instruction": "Solve the MiniWoB++ choose-list task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_select",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "select", "submit"],
+      "subdomain": "choose-list",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-enter-text",
+      "instruction": "Solve the MiniWoB++ enter-text task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_fill",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "fill", "submit"],
+      "subdomain": "enter-text",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-focus-text",
+      "instruction": "Solve the MiniWoB++ focus-text task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "single_step_focus",
+      "difficulty": "easy",
+      "tags": ["external", "miniwob", "focus"],
+      "subdomain": "focus-text",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-click-option",
+      "instruction": "Solve the MiniWoB++ click-option task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_check",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "radio", "submit"],
+      "subdomain": "click-option",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-click-checkboxes",
+      "instruction": "Solve the MiniWoB++ click-checkboxes task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "form_check",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "checkbox", "submit"],
+      "subdomain": "click-checkboxes",
+      "seed": 7
+    },
+    {
+      "task_id": "miniwob-click-button-sequence",
+      "instruction": "Solve the MiniWoB++ click-button-sequence task.",
+      "adapter": "miniwob_playwright",
+      "benchmark": "miniwob++",
+      "family": "multi_step_click",
+      "difficulty": "medium",
+      "tags": ["external", "miniwob", "sequence"],
+      "subdomain": "click-button-sequence",
+      "seed": 7
+    }
+  ]
+}
