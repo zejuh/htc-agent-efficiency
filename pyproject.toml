@@ -3,8 +3,11 @@ name = "selective-observation-agent"
 version = "0.1.0"
 description = "Learned, cost-sensitive observation gating for computer-use agents."
 requires-python = ">=3.10"
-# scikit-learn is optional: soa.gate falls back to a built-in logistic trainer if it is absent.
+# scikit-learn 是可选依赖；如果没有安装，soa.gate 会回退到内置 logistic 训练器。
 dependencies = []
+
+[project.optional-dependencies]
+miniwob = ["miniwob==1.0"]
 
 [tool.setuptools.packages.find]
 include = ["soa*"]

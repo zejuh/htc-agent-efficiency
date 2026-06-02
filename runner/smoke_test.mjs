@@ -1,4 +1,4 @@
-// No-API sanity check: every task in the selected suite loads through its adapter.
+// 不调用 API 的基本检查：确认所选任务集里的每个任务都能通过适配器加载。
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";

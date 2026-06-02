@@ -5,9 +5,9 @@ from pathlib import Path
 
 
 def load_steps(path: str | Path) -> list[dict]:
-    """Load oracle step rows; keep only labeled rows (drop error rows)."""
+    """读取 oracle step 行；只保留带标签的行，丢弃错误行。"""
     rows: list[dict] = []
-    with Path(path).open("r", encoding="utf-8") as f:
+    with Path(path).open("r", encoding="utf-8-sig") as f:
         for line_no, line in enumerate(f, start=1):
             line = line.strip()
             if not line:

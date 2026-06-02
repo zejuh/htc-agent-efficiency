@@ -1,15 +1,14 @@
-// Live evaluation of observation policies, all driven by the same OpenAI-backed agent.
+// 在线评估 observation policy。所有策略都由同一个 OpenAI-backed agent 驱动。
 //
-//   always     observe before every action                 (upper bound on calls)
-//   never      observe once, then coast on the plan         (lower bound; no safety)
-//   handrule   observe if the screen changed OR the next    (the hand-coded baseline
-//              carried action is a risk-bearing checkpoint    this project aims to beat)
-//   learned@T  observe if the trained gate's probability     (learned, threshold-swept;
-//              >= T, with a hard safety floor that always     sweeping T traces a whole
-//              observes before irreversible/external actions  cost-success frontier)
+//   always     每个动作前都观察                         （模型调用上界）
+//   never      只观察一次，然后沿用旧计划                 （调用下界，但不安全）
+//   handrule   页面变化或下一步 carried action 是风险动作时观察
+//                                                        （本项目希望超过的人工 baseline）
+//   learned@T  训练好的 gate 概率 >= T 时观察，并保留硬性 safety floor：
+//              不可逆/对外可见动作前一定观察              （扫 T 得到 cost-success frontier）
 //
-// Output: results/policy_summary.json, results/policy_report.md, results/pareto.{csv,svg}
-// Requires OPENAI_API_KEY. Optional: --gate <path> (default results/gate_model.json).
+// 输出：results/policy_summary.json、results/policy_report.md、results/pareto.{csv,svg}
+// 需要 OPENAI_API_KEY。可选参数：--gate <path>，默认 results/gate_model.json。
 
 import fs from "node:fs";
 import path from "node:path";
@@ -25,6 +24,7 @@ import {
   executeAction,
   coarseSignature,
   getCandidates,
+  candidateStateSignatures,
   isCheckpoint,
   extractObsFeatures,
   decideObservation,
@@ -42,10 +42,6 @@ const TAUS = (process.env.SOA_TAUS || "0.2,0.35,0.5,0.65,0.8,0.9,0.95").split(",
 function parseArg(flag) {
   const i = process.argv.indexOf(flag);
   return i >= 0 ? process.argv[i + 1] : undefined;
-}
-
-async function candidateCount(page) {
-  return (await getCandidates(page)).length;
 }
 
 function makeRng(seed = 7) {
@@ -115,6 +111,9 @@ async function runPolicyOnTask(browser, task, spec) {
   let idx = 1;
   let screenChangedLast = true;
   let candidatesChangedLast = true;
+  let fieldValueChangedLast = true;
+  let buttonTextChangedLast = true;
+  let optionTextChangedLast = true;
   let modelCalls = 0;
   let cost = 0;
   let latency = 0;
@@ -131,6 +130,9 @@ async function runPolicyOnTask(browser, task, spec) {
       blindAction,
       screenChangedLast,
       candidatesChangedLast,
+      fieldValueChangedLast,
+      buttonTextChangedLast,
+      optionTextChangedLast,
       stepsSinceObserve: idx,
       remainingPlanLen: carriedPlan ? carriedPlan.length - idx : 0,
     });
@@ -176,7 +178,9 @@ async function runPolicyOnTask(browser, task, spec) {
 
     const beforeStatus = await adapter.getCoarseStatusText();
     const before = await coarseSignature(page, beforeStatus);
-    const beforeCount = await candidateCount(page);
+    const beforeCandidates = await getCandidates(page);
+    const beforeCount = beforeCandidates.length;
+    const beforeState = candidateStateSignatures(beforeCandidates);
     try {
       await executeAction(page, action);
       await adapter.afterAction();
@@ -186,11 +190,16 @@ async function runPolicyOnTask(browser, task, spec) {
     }
     const afterStatus = await adapter.getCoarseStatusText();
     const after = await coarseSignature(page, afterStatus);
-    const afterCount = await candidateCount(page);
+    const afterCandidates = await getCandidates(page);
+    const afterCount = afterCandidates.length;
+    const afterState = candidateStateSignatures(afterCandidates);
     screenChangedLast = before !== after;
     candidatesChangedLast = beforeCount !== afterCount;
+    fieldValueChangedLast = beforeState.fieldValues !== afterState.fieldValues;
+    buttonTextChangedLast = beforeState.buttonTexts !== afterState.buttonTexts;
+    optionTextChangedLast = beforeState.optionTexts !== afterState.optionTexts;
 
-    if (!observe) idx += 1; // coasted one more step into the carried plan
+    if (!observe) idx += 1; // 又沿用旧计划前进了一步
   }
 
   const finalInfo = await adapter.getEvalInfo();
@@ -287,7 +296,7 @@ function writeReport(points, suiteSummary) {
   }
   lines.push(
     "",
-    "Read the `learned@T` rows as a frontier: lower `T` observes more (closer to `always`), higher `T` coasts more (closer to `never`). The headline result is whether some `learned@T` dominates `handrule` — equal-or-higher success at fewer model calls, with unsafe rate held at 0 by the safety floor.",
+    "Read the `learned@T` rows as a frontier: lower `T` observes more (closer to `always`), higher `T` coasts more (closer to `never`). The headline result is whether some `learned@T` dominates `handrule`: equal-or-higher success at fewer model calls, with unsafe rate held at 0 by the safety floor.",
     "",
     "Artifacts: `pareto.csv`, `pareto.svg`, `policy_summary.json`.",
   );

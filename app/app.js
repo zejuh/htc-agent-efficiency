@@ -1,24 +1,21 @@
-// Local GUI app for the selective-observation experiments.
+// 选择性观察实验使用的本地 GUI 应用。
 //
-// Beyond the static tasks, several scenarios inject the kind of state change that
-// makes "when to observe" a real decision:
+// 除了静态任务外，下面几个场景会故意注入状态变化，让“什么时候重新观察”
+// 变成一个真实决策：
 //
-//   async_shop / async_contacts  search results render after a delay, so a plan
-//                                that clicks a result blindly (before re-observing)
-//                                acts on a list that is not there yet.
-//   drift_recipient              a "suggested recipient" field is "Resolving..." at
-//                                first and only resolves to the real address after a
-//                                delay. The set of on-screen controls never changes —
-//                                only a field VALUE does — so a coarse "did the screen
-//                                change" heuristic cannot tell that re-observation is
-//                                needed. Sending to the stale value is the wrong (and
-//                                externally visible) action.
-//   price_drift                  the notebook's add-to-cart button keeps the same
-//                                selector, but the visible price in its label changes
-//                                after a delay. A selector-only change detector misses
-//                                it, while a fresh observation sees the updated price.
-//   resolve_language             the language dropdown keeps the same selector, but its
-//                                target option only appears after a delay.
+//   async_shop / async_contacts  搜索结果会延迟出现。如果 agent 不重新观察就
+//                                盲目点击结果，就会操作一个尚未渲染好的列表。
+//   drift_recipient              “建议收件人”字段一开始是 "Resolving..."，
+//                                延迟后才变成真实邮箱。页面控件集合不变，
+//                                只改变字段值，所以粗粒度“页面是否变化”启发式
+//                                无法判断是否需要重新观察。把邮件发给旧值就是
+//                                错误且对外可见的动作。
+//   price_drift                  notebook 的 add-to-cart 按钮 selector 不变，
+//                                但按钮上的可见价格会延迟变化。只看 selector 的
+//                                detector 会漏掉它，重新观察则能看到新价格。
+//   resolve_language             语言下拉框 selector 不变，但目标选项会延迟出现。
+//   stable profile               静态多字段表单。多数中间动作不会改变页面，
+//                                用来给 gate 提供“沿用旧计划仍正确”的样本。
 
 const statusEl = document.querySelector("#status");
 const taskLabel = document.querySelector("#task-label");
@@ -41,6 +38,7 @@ const state = {
   suggestedResolved: false,
   languagesResolved: false,
   notebookPriceCents: PRICE_INITIAL_CENTS,
+  profilePreviewed: false,
 };
 
 function setStatus(text) {
@@ -48,9 +46,9 @@ function setStatus(text) {
   document.body.dataset.status = text;
 }
 
-// Signal to the test adapter that an async page update is in progress.
-// afterAction() in local_playwright.mjs waits for this to clear before
-// the next observation, so the agent always sees a fully-resolved state.
+// 告诉测试适配器：当前有异步 DOM 更新正在进行。
+// local_playwright.mjs 里的 afterAction() 会等待这个标记清除后再观察，
+// 这样 agent 看到的就是已经稳定下来的页面状态。
 function setLoading(active) {
   if (active) {
     document.body.dataset.loading = "1";
@@ -96,7 +94,7 @@ function setLanguageOptions(labels, selected) {
   }
 }
 
-// ----- Mail -----------------------------------------------------------------
+// ----- 邮件 -----------------------------------------------------------------
 
 const suggestedRow = byId("suggested-recipient").closest("label");
 
@@ -139,7 +137,7 @@ byId("send-btn").addEventListener("click", () => {
   setStatus(filled ? "Email sent" : "Email incomplete");
 });
 
-// ----- Shop -----------------------------------------------------------------
+// ----- 商店 -----------------------------------------------------------------
 
 function renderShopResults() {
   const query = byId("shop-search").value.toLowerCase();
@@ -187,7 +185,7 @@ byId("checkout-btn").addEventListener("click", () => {
   setStatus(state.cartItems > 0 ? "Checkout ready" : "Cart empty");
 });
 
-// ----- Contacts -------------------------------------------------------------
+// ----- 联系人 ---------------------------------------------------------------
 
 function renderContactResults() {
   const query = byId("contact-search").value.toLowerCase();
@@ -216,7 +214,7 @@ document.querySelectorAll(".contact-row").forEach((row) => {
   });
 });
 
-// ----- Settings -------------------------------------------------------------
+// ----- 设置 -----------------------------------------------------------------
 
 byId("open-settings").addEventListener("click", () => {
   show(byId("settings-panel"));
@@ -245,7 +243,7 @@ byId("save-settings").addEventListener("click", () => {
   setStatus(`Settings saved: ${byId("language-select").value}`);
 });
 
-// ----- Files ----------------------------------------------------------------
+// ----- 文件 -----------------------------------------------------------------
 
 byId("open-files").addEventListener("click", () => {
   show(byId("file-panel"));
@@ -272,7 +270,23 @@ byId("rename-btn").addEventListener("click", () => {
   setStatus(`Renamed to ${state.renamedFile}`);
 });
 
-// Hide the suggested-recipient row unless the drift scenario uses it.
+// ----- 个人资料 -------------------------------------------------------------
+
+byId("profile-preview").addEventListener("click", () => {
+  const first = byId("profile-first").value.trim();
+  const last = byId("profile-last").value.trim();
+  const role = byId("profile-role").value.trim();
+  const wantsDigest = byId("profile-newsletter").checked;
+  const digest = byId("profile-digest").value;
+  if (!first || !last || !role) {
+    setStatus("Profile incomplete");
+    return;
+  }
+  state.profilePreviewed = true;
+  setStatus(`Profile preview ready: ${first} ${last} - ${role} - ${wantsDigest ? digest : "No digest"}`);
+});
+
+// 除非 drift 场景需要，否则隐藏 suggested-recipient 行。
 hide(suggestedRow);
 setNotebookPrice(PRICE_INITIAL_CENTS);
 setLanguageOptions(["English", "Spanish", "Japanese"], "English");

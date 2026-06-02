@@ -1,11 +1,11 @@
-"""Generate a small synthetic oracle-steps file so the trainer/tests/pipeline run
-offline (no API key). The synthetic labeling deliberately includes the regime that
-motivates the project: stable screen + safe action + LOW model confidence -> the
-observation was still needed. The hand rule (observe only on screen change / risk)
-misses exactly those, leaving room for the learned gate.
+"""生成一份小型合成 oracle-steps 文件，让 trainer/tests/pipeline 可以离线运行。
 
-This is NOT a substitute for real collection (runner/collect.mjs) — it only exercises
-the pipeline. Real experiments train on data/oracle_steps.jsonl.
+合成标签刻意包含项目最关心的情况：页面稳定 + 动作安全 + 模型置信度低，
+但观察仍然必要。只看页面变化/风险动作的 hand rule 会漏掉这些样本，
+因此 learned gate 才有学习空间。
+
+这不能替代真实采集（runner/collect.mjs），只用于检查 pipeline 是否能跑通。
+真实实验应该使用 data/oracle_steps.jsonl 训练。
 """
 
 from __future__ import annotations
@@ -62,8 +62,8 @@ def make_row(rng: random.Random, task_id: str) -> dict:
     elif risk == "irreversible":
         f["next_risk_irreversible"] = 1.0
 
-    # Ground-truth "observation was needed": no plan, screen changed, risky,
-    # OR (the key case) stable+safe but the model was unsure / had coasted a while.
+    # 真实标签“需要观察”：没有旧计划、页面变化、动作有风险，
+    # 或者关键情况：页面稳定且动作安全，但模型不确定或已经沿用旧计划太久。
     need = (
         no_plan >= 0.5
         or screen_changed >= 0.5
@@ -72,7 +72,7 @@ def make_row(rng: random.Random, task_id: str) -> dict:
         or needs >= 0.5
         or steps_since >= 0.5
     )
-    if rng.random() < 0.06:  # label noise
+    if rng.random() < 0.06:  # 标签噪声
         need = not need
     return {
         "task_id": task_id,

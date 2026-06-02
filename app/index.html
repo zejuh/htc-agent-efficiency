@@ -106,6 +106,24 @@
           <button id="rename-btn">Rename</button>
         </div>
       </section>
+
+      <section class="workspace" data-app="profile">
+        <div class="pane">
+          <h2>Profile</h2>
+          <label>First name <input id="profile-first" autocomplete="off"></label>
+          <label>Last name <input id="profile-last" autocomplete="off"></label>
+          <label>Role <input id="profile-role" autocomplete="off"></label>
+          <label class="inline"><input id="profile-newsletter" type="checkbox"> Email digest</label>
+          <label>Digest frequency
+            <select id="profile-digest">
+              <option>Weekly</option>
+              <option>Daily</option>
+              <option>Monthly</option>
+            </select>
+          </label>
+          <button id="profile-preview" type="button">Preview profile</button>
+        </div>
+      </section>
     </main>
 
     <script src="./app.js"></script>

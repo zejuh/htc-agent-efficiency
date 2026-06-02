@@ -5,6 +5,7 @@ __pycache__/
 .ruff_cache/
 
 browser_demo/node_modules/
+/node_modules/
 
 /results/
 *.log

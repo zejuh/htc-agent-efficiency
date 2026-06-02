@@ -1,25 +1,24 @@
-// Oracle data collection for the learned observation gate.
+// 为 learned observation gate 采集 oracle 标注数据。
 //
-// The oracle observes at EVERY step and always follows the freshly-verified action.
-// At each step it also asks the counterfactual question that defines the label:
+// oracle 每一步都观察，并始终执行刚验证过的动作。每一步它还会提出定义标签的
+// 反事实问题：
 //
-//   "If I had been coasting on my previously-formed plan instead of observing now,
-//    would the action I'm about to take differ from the verified one?"
+//   “如果我刚才没有观察，而是沿用之前形成的计划，
+//    我将要执行的动作会不会和验证动作不同？”
 //
-//   label = 1  ->  observation was necessary (the coasted action diverges, or there
-//                  is no carried plan)
-//   label = 0  ->  the carried plan still agrees; observing here changed nothing
+//   label = 1  ->  观察是必要的：沿用旧计划会分歧，或当前没有旧计划
+//   label = 0  ->  旧计划仍然一致，这次观察没有改变动作
 //
-// We keep a "carried plan" and a coasting counter so that steps_since_observe /
-// remaining_plan_len / plan_age have real variance: the counter grows for as long as
-// the carried plan keeps matching the verified action, and resets on divergence.
+// 这里维护一个 carried plan 和 coasting counter，让 steps_since_observe /
+// remaining_plan_len / plan_age 有真实变化：旧计划持续匹配验证动作时计数增长，
+// 一旦分歧就重置。
 //
-// Output: one JSONL row per step -> data/oracle_steps.jsonl  (+ a label summary).
-// Requires OPENAI_API_KEY.
+// 输出：每一步一行 JSONL -> data/oracle_steps.jsonl，并附带标签摘要。
+// 需要 OPENAI_API_KEY。
 //
-// In round-0 this runs under the oracle ("always" observe). For later DAgger rounds,
-// pass --policy learned --gate <model> --tau <threshold> to visit states induced by
-// the current learned gate while still querying the oracle for the supervision label.
+// 第 0 轮在 oracle 策略下运行，也就是 always observe。后续 DAgger 轮次可以传入
+// --policy learned --gate <model> --tau <threshold>，让当前 learned gate 访问
+// 自己诱导出的状态，同时仍向 oracle 查询监督标签。
 
 import fs from "node:fs";
 import path from "node:path";
@@ -34,6 +33,7 @@ import {
   executeAction,
   coarseSignature,
   getCandidates,
+  candidateStateSignatures,
   materialDivergence,
   isCheckpoint,
   extractObsFeatures,
@@ -44,7 +44,7 @@ import {
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "..");
 const tasksPath = path.join(repoRoot, "tasks", "tasks.json");
-const ROUNDS = Number(process.env.SOA_COLLECT_ROUNDS || 3);
+const ROUNDS = Number(process.env.SOA_COLLECT_ROUNDS || 1);
 const MAX_STEPS = Number(process.env.SOA_MAX_STEPS || 16);
 
 function parseArg(flag, fallback = undefined) {
@@ -70,10 +70,6 @@ function buildPolicySpec() {
   throw new Error(`Unsupported collection policy: ${kind}`);
 }
 
-async function candidateCount(page) {
-  return (await getCandidates(page)).length;
-}
-
 async function collectTask(browser, task, round, rolloutSpec) {
   const adapter = await createAdapter(browser, task);
   const page = adapter.page;
@@ -83,6 +79,9 @@ async function collectTask(browser, task, round, rolloutSpec) {
   let staleIdx = 1;
   let screenChangedLast = true;
   let candidatesChangedLast = true;
+  let fieldValueChangedLast = true;
+  let buttonTextChangedLast = true;
+  let optionTextChangedLast = true;
 
   for (let i = 0; i < MAX_STEPS; i += 1) {
     if (await adapter.isSuccess()) break;
@@ -92,6 +91,9 @@ async function collectTask(browser, task, round, rolloutSpec) {
       blindAction,
       screenChangedLast,
       candidatesChangedLast,
+      fieldValueChangedLast,
+      buttonTextChangedLast,
+      optionTextChangedLast,
       stepsSinceObserve: staleIdx,
       remainingPlanLen: carriedPlan ? carriedPlan.length - staleIdx : 0,
     });
@@ -139,7 +141,9 @@ async function collectTask(browser, task, round, rolloutSpec) {
 
     const beforeStatus = await adapter.getCoarseStatusText();
     const before = await coarseSignature(page, beforeStatus);
-    const beforeCount = await candidateCount(page);
+    const beforeCandidates = await getCandidates(page);
+    const beforeCount = beforeCandidates.length;
+    const beforeState = candidateStateSignatures(beforeCandidates);
     try {
       await executeAction(page, executedAction);
       await adapter.afterAction();
@@ -149,9 +153,14 @@ async function collectTask(browser, task, round, rolloutSpec) {
     }
     const afterStatus = await adapter.getCoarseStatusText();
     const after = await coarseSignature(page, afterStatus);
-    const afterCount = await candidateCount(page);
+    const afterCandidates = await getCandidates(page);
+    const afterCount = afterCandidates.length;
+    const afterState = candidateStateSignatures(afterCandidates);
     screenChangedLast = before !== after;
     candidatesChangedLast = beforeCount !== afterCount;
+    fieldValueChangedLast = beforeState.fieldValues !== afterState.fieldValues;
+    buttonTextChangedLast = beforeState.buttonTexts !== afterState.buttonTexts;
+    optionTextChangedLast = beforeState.optionTexts !== afterState.optionTexts;
 
     if (decision.observe) {
       carriedPlan = plan.actions;
@@ -194,6 +203,7 @@ async function main() {
     throw new Error(`No tasks matched the requested suite/filter options in ${taskArgs.suitePath || tasksPath}`);
   }
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.writeFileSync(outPath, "", "utf-8");
   const rolloutSpec = buildPolicySpec();
 
   const browser = await chromium.launch({ headless: process.env.SOA_HEADFUL !== "1" });
@@ -204,18 +214,20 @@ async function main() {
         process.stderr.write(`collect round ${round} :: ${rolloutSpec.label} :: ${task.task_id}\n`);
         const rows = await collectTask(browser, task, round, rolloutSpec);
         allRows.push(...rows);
+        if (rows.length) {
+          fs.appendFileSync(outPath, rows.map((r) => JSON.stringify(r)).join("\n") + "\n", "utf-8");
+        }
       }
     }
   } finally {
     await browser.close();
   }
 
-  fs.writeFileSync(outPath, allRows.map((r) => JSON.stringify(r)).join("\n") + "\n", "utf-8");
   const summary = summarize(allRows);
   console.log(JSON.stringify({ model: MODEL, out: outPath, features: OBS_FEATURES, rollout_policy: rolloutSpec.label, suite: suiteSummary, summary }, null, 2));
   if (summary.steps && (summary.positive_rate === 0 || summary.positive_rate === 1)) {
     process.stderr.write(
-      "\nWARNING: labels are degenerate (all 0 or all 1). The tasks are too easy/hard for the gate to learn anything — add or tune dynamic tasks before training.\n",
+      "\nWARNING: labels are degenerate (all 0 or all 1). The tasks are too easy or too hard for the gate to learn anything; add or tune dynamic tasks before training.\n",
     );
   }
 }

@@ -1,17 +1,16 @@
-"""Train a cost-sensitive observation gate from oracle-labeled steps.
+"""从 oracle 标注 step 中训练一个成本敏感的 observation gate。
 
-The gate is learned over the observation features logged by the collector. The
-label is the oracle divergence label (1 = observing here changed the action).
-We export a JSON the JS evaluator consumes, and we compare the learned gate
-against the hand-coded rule on held-out tasks.
+gate 学习 collector 记录下来的 observation features。标签是 oracle divergence label：
+1 表示“这一步观察改变了动作”。训练结束后导出 JS evaluator 可以读取的 JSON，
+并在 held-out task 上把 learned gate 和手写规则进行比较。
 
-Two gate families are supported:
+支持两类 gate：
 
-- logistic: transparent linear baseline
-- mlp: one-hidden-layer neural gate for nonlinear feature interactions
+- logistic：透明的线性 baseline
+- mlp：一层隐藏层的神经 gate，用于非线性特征交互
 
-The default ``auto`` mode selects between them on a validation split, then
-re-fits the winner on train+validation before reporting on the final test split.
+默认 ``auto`` 模式会在验证集上二选一，然后用 train+validation 重新训练胜出的模型，
+最后在 test split 上报告结果。
 """
 
 from __future__ import annotations
@@ -211,8 +210,8 @@ def predict_model_prob(model: dict, features: dict) -> float:
 
 
 def handrule_observe(features: dict) -> int:
-    """The baseline the learned gate must beat: observe on screen change, before
-    risky carried actions, or when there is no carried plan."""
+    """learned gate 需要超过的 baseline：页面变化、旧计划下一步有风险、
+    或没有旧计划时观察。"""
     return int(
         features.get("no_plan", 0.0) >= 0.5
         or features.get("screen_changed_last", 0.0) >= 0.5
@@ -293,26 +292,26 @@ def metrics_for_model(model: dict, split: list[dict], threshold: float) -> dict[
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Train the observation gate from oracle-labeled steps.")
-    parser.add_argument("--steps", required=True, help="JSONL produced by runner/collect.mjs")
-    parser.add_argument("--out", required=True, help="Output gate model JSON")
+    parser = argparse.ArgumentParser(description="从 oracle 标注 step 中训练 observation gate。")
+    parser.add_argument("--steps", required=True, help="runner/collect.mjs 生成的 JSONL")
+    parser.add_argument("--out", required=True, help="输出 gate model JSON")
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument(
         "--learner",
         choices=["auto", "logistic", "mlp"],
         default="auto",
-        help="Gate family to train. 'auto' chooses the best validation performer.",
+        help="要训练的 gate family。'auto' 会选择验证集表现最好的模型。",
     )
     parser.add_argument(
         "--sklearn-logistic",
         action="store_true",
-        help="Use scikit-learn LogisticRegression for the logistic baseline if available.",
+        help="如果可用，则用 scikit-learn LogisticRegression 训练 logistic baseline。",
     )
     args = parser.parse_args()
 
     rows = load_steps(args.steps)
     if not rows:
-        raise SystemExit("No labeled rows found. Run runner/collect.mjs first.")
+        raise SystemExit("没有找到带标签的行。请先运行 runner/collect.mjs。")
     names = feature_names(rows)
     train, val, test = split_train_val_test(rows)
 
@@ -349,8 +348,8 @@ def main() -> None:
         },
         "calibration_test": calibration(final_model, test),
         "note": (
-            "Auto-selection now compares a transparent logistic gate to a shallow neural gate, "
-            "then reports the final model on held-out tasks."
+            "Auto-selection 会比较透明的 logistic gate 和浅层 neural gate，"
+            "然后在 held-out tasks 上报告最终模型。"
         ),
     }
     write_json(args.out, payload)

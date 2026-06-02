@@ -28,16 +28,16 @@ export async function createLocalPlaywrightAdapter(browser, task) {
       return { final_status: await this.getStatusText() };
     },
     async afterAction() {
-      // Wait for any async DOM update (search results, recipient resolution,
-      // price changes, language options) to settle before the next observation.
-      // app.js sets document.body.dataset.loading="1" at the start of each
-      // async operation and deletes it when done.
+      // 等待异步 DOM 更新稳定下来，再进行下一次观察。这里覆盖搜索结果、
+      // 收件人解析、价格变化和语言选项加载等场景。
+      // app.js 会在异步操作开始时设置 document.body.dataset.loading="1"，
+      // 完成后删除这个标记。
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       await sleep(40); // let synchronous side-effects propagate first
       try {
         await page.waitForFunction(() => !document.body.dataset.loading, { timeout: 1600 });
       } catch {
-        // timeout is acceptable — continue with whatever state is present
+        // timeout 可以接受：继续使用当前已经存在的页面状态。
       }
     },
     async close() {

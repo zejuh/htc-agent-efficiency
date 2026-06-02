@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from docx import Document
@@ -12,12 +13,28 @@ from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
 
-ROOT = Path("/Users/zejun/Documents/GitHub/selective-observation-agent")
-OUT = ROOT / "outputs" / "manual-20260531" / "documents" / "final-report" / "output" / "selective-observation-final-report.docx"
+ROOT = Path(os.environ.get("SOA_PROJECT_ROOT", Path(__file__).resolve().parents[1])).resolve()
+OUT = Path(
+    os.environ.get(
+        "SOA_REPORT_OUT",
+        ROOT
+        / "outputs"
+        / "manual-20260531"
+        / "documents"
+        / "final-report"
+        / "output"
+        / "selective-observation-final-report.docx",
+    )
+).resolve()
 
 
 def load_summary(name: str) -> dict:
-    return json.loads((ROOT / "results" / name / "policy_summary.json").read_text())
+    path = ROOT / "results" / name / "policy_summary.json"
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Missing {path}. Run the policy evaluation first, or set SOA_PROJECT_ROOT to the repository root."
+        )
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 LOCAL = load_summary("local_main")

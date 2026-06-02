@@ -1,19 +1,46 @@
-// Shared agent primitives used by both the oracle collector and the policy evaluator.
+// oracle 采集器和策略评估器共用的 agent 基础逻辑。
 //
-// The single most important thing in this file is the OBSERVATION FEATURE CONTRACT
-// (OBS_FEATURES + extractObsFeatures). The collector logs these features with an
-// oracle label; the Python trainer learns weights over exactly these names; the
-// evaluator recomputes the same features live and applies the weights. All three
-// must agree, so the feature definition lives here, once.
+// 这个文件最重要的是 OBSERVATION FEATURE CONTRACT：
+// OBS_FEATURES + extractObsFeatures。采集器用这些特征记录 oracle 标签；
+// Python 训练器只针对这些同名特征学习权重；评估器在线重新计算同一组特征并应用权重。
+// 三者必须完全一致，所以特征定义集中放在这里。
 //
-// The model backend is the OpenAI Chat Completions API (structured outputs). The key
-// is read from OPENAI_API_KEY. Model via OPENAI_MODEL (default gpt-4o-mini).
+// 模型后端是 OpenAI Chat Completions API（structured outputs）。API key 从
+// OPENAI_API_KEY 读取，模型由 OPENAI_MODEL 指定，默认 gpt-4o-mini。
 
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-export const APP_URL = pathToFileURL(path.join(here, "..", "..", "app", "index.html")).href;
+const repoRoot = path.resolve(here, "..", "..");
+
+function loadDotEnv(envPath = path.join(repoRoot, ".env")) {
+  if (!fs.existsSync(envPath)) return;
+  const raw = fs.readFileSync(envPath, "utf-8").replace(/^\uFEFF/, "");
+  for (const line of raw.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const normalized = trimmed.startsWith("export ") ? trimmed.slice("export ".length).trim() : trimmed;
+    const eq = normalized.indexOf("=");
+    if (eq <= 0) continue;
+
+    const key = normalized.slice(0, eq).trim();
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) continue;
+    if (process.env[key] !== undefined) continue;
+
+    let value = normalized.slice(eq + 1).trim();
+    const quote = value[0];
+    if ((quote === '"' || quote === "'") && value.endsWith(quote)) {
+      value = value.slice(1, -1);
+    }
+    process.env[key] = value;
+  }
+}
+
+loadDotEnv();
+
+export const APP_URL = pathToFileURL(path.join(repoRoot, "app", "index.html")).href;
 
 export const MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
 export const OBSERVATION_MODE = process.env.OBSERVATION_MODE || "dom";
@@ -21,7 +48,7 @@ export const ACTION_TIMEOUT_MS = Number(process.env.SOA_ACTION_TIMEOUT_MS || 500
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const CALL_TIMEOUT_MS = Number(process.env.SOA_CALL_TIMEOUT_MS || 60000);
 
-// USD per 1M tokens (input, output). Cached input tokens billed at ~0.5x input.
+// 每 100 万 token 的美元价格（input, output）。缓存 input token 按约 0.5 倍 input 计费。
 export const PRICING = {
   "gpt-4o-mini": { input: 0.15, output: 0.6 },
   "gpt-4o": { input: 2.5, output: 10.0 },
@@ -52,6 +79,8 @@ Rules:
 - Only use a selector exactly as provided in the candidates. Never invent selectors.
 - Use "fill" for text boxes/textareas, "check" for checkboxes, "select" for dropdowns (put the option label in "text"), "click" for buttons/list items, "done" when the success condition is met.
 - Use candidate state to detect progress that has already happened: candidate.value for filled inputs, candidate.checked for checkboxes/radios, and candidate.selected_text for dropdowns. If the required value is already present, do not repeat the same form action; move on to the next needed action such as Submit.
+- Treat the current_status as progress evidence. If it says a composer, folder, preferences panel, search results, contact card, or profile preview is already open/filtered/ready, do not restart that workflow; continue from the visible current state.
+- If a search query is already present and matching results are visible, do not click Search again. If a panel is already open, do not click its Open button again. If a row is already selected and its value is loaded into an input, continue to the edit/submit action.
 - Do not emit "done" merely because an intermediate field is filled or an option is selected. If the instruction says to Submit/Save/Send and that button is still visible, include that action unless the task is already visibly complete.
 - Set "checkpoint": true and an appropriate "risk" when the action submits, sends, saves, renames, deletes, or checks out (externally visible or hard to reverse). Use "external" for send/checkout/submit, "irreversible" for delete/rename, "state_changing" for save/toggle, otherwise "safe".
 - For EACH action also report "confidence" in [0,1] that the action is correct given ONLY what you can currently see, and "needs_observation": true if you would want to look at the page again before doing it (e.g. a value may still be loading or may have changed).
@@ -105,10 +134,9 @@ export function sameAction(a, b) {
   return a.action_type === b.action_type && (a.selector || "") === (b.selector || "") && (a.text || "") === (b.text || "");
 }
 
-// Is this text taken FROM the page (a field value or dropdown option) rather than
-// freely composed by the model? Free-form text (an email body, a search phrase) is
-// nondeterministic and should not count as a divergence; a page-derived value (the
-// resolved recipient, a selected option) should.
+// 判断这段文本是否来自页面本身（字段值或下拉选项），而不是模型自由生成。
+// 自由文本（邮件正文、搜索词）具有不确定性，不应该算作动作分歧；
+// 页面派生值（解析后的收件人、选中的选项）则应该算。
 export function isPageDerived(text, candidates) {
   const t = (text || "").trim().toLowerCase();
   if (t.length < 2) return false;
@@ -119,9 +147,9 @@ export function isPageDerived(text, candidates) {
   );
 }
 
-// Material divergence between the coasted action and the verified action: a different
-// control or action kind always counts; a text difference counts only for page-derived
-// values. This is the oracle label "would observing here have changed my action?".
+// 判断“沿用旧计划的动作”和“重新观察后的验证动作”是否有实质分歧：
+// 控件不同或动作类型不同一定算分歧；文本不同只有在文本来自页面时才算。
+// 这就是 oracle 标签背后的问题：“这一步观察会不会改变我的动作？”
 export function materialDivergence(blind, verified, candidates) {
   if (!blind || !verified) return true;
   if (blind.action_type !== verified.action_type) return true;
@@ -191,12 +219,43 @@ export async function getCandidates(page) {
   });
 }
 
-// Coarse "did the screen change" signal: adapter-provided status text + the SET of
-// selectors only. It is intentionally blind to field values.
+// 粗粒度“页面是否变化”信号：只看适配器提供的 status text 和 selector 集合。
+// 它故意不看字段值，因此会漏掉 value drift。
 export async function coarseSignature(page, statusText) {
   const candidates = await getCandidates(page);
   const selectors = candidates.map((c) => c.selector).sort().join("|");
   return `${statusText}::${selectors}`;
+}
+
+export function candidateStateSignatures(candidates) {
+  const fieldValues = [];
+  const buttonTexts = [];
+  const optionTexts = [];
+  for (const candidate of candidates) {
+    const selector = candidate.selector || "";
+    if (["input", "text", "textarea", "checkbox", "radio", "select"].includes(candidate.role)) {
+      fieldValues.push(
+        [
+          selector,
+          candidate.role || "",
+          candidate.value || "",
+          candidate.checked ? "checked" : "unchecked",
+          candidate.selected_text || "",
+        ].join("="),
+      );
+    }
+    if (["button", "a", "label", "div"].includes(candidate.role) || selector.startsWith("text=") || selector.startsWith("[data-")) {
+      buttonTexts.push([selector, candidate.label || ""].join("="));
+    }
+    if ((candidate.options || []).length) {
+      optionTexts.push([selector, (candidate.options || []).join("|")].join("="));
+    }
+  }
+  return {
+    fieldValues: fieldValues.sort().join("||"),
+    buttonTexts: buttonTexts.sort().join("||"),
+    optionTexts: optionTexts.sort().join("||"),
+  };
 }
 
 export async function executeAction(page, action) {
@@ -277,7 +336,7 @@ export async function captureObservation(page, adapter) {
   return { status, candidates, screenshotB64 };
 }
 
-// One model call: observe the current page, return a short plan of actions.
+// 一次模型调用：观察当前页面，并返回一小段动作计划。
 export async function planActions(task, observation) {
   const t0 = performance.now();
   const data = await callOpenAI(buildMessages(task, observation.status, observation.candidates, observation.screenshotB64));
@@ -293,13 +352,16 @@ export async function planActions(task, observation) {
   return { actions: parsed.actions || [], usage, latency_ms };
 }
 
-// ----- Observation feature contract -----------------------------------------
+// ----- 观察特征契约 ----------------------------------------------------------
 
 export const OBS_FEATURES = [
   "bias",
   "no_plan",
   "screen_changed_last",
   "candidates_changed_last",
+  "field_value_changed_last",
+  "button_text_changed_last",
+  "option_text_changed_last",
   "steps_since_observe",
   "remaining_plan_len",
   "next_is_click",
@@ -313,7 +375,8 @@ export const OBS_FEATURES = [
   "verbalized_needs_observation",
 ];
 
-// ctx: { blindAction, screenChangedLast, candidatesChangedLast, stepsSinceObserve, remainingPlanLen }
+// ctx: { blindAction, screenChangedLast, candidatesChangedLast, fieldValueChangedLast,
+//        buttonTextChangedLast, optionTextChangedLast, stepsSinceObserve, remainingPlanLen }
 export function extractObsFeatures(ctx) {
   const a = ctx.blindAction || null;
   const conf = a && typeof a.confidence === "number" ? Math.max(0, Math.min(1, a.confidence)) : a ? 0.5 : 0.0;
@@ -322,6 +385,9 @@ export function extractObsFeatures(ctx) {
     no_plan: a ? 0.0 : 1.0,
     screen_changed_last: ctx.screenChangedLast ? 1.0 : 0.0,
     candidates_changed_last: ctx.candidatesChangedLast ? 1.0 : 0.0,
+    field_value_changed_last: ctx.fieldValueChangedLast ? 1.0 : 0.0,
+    button_text_changed_last: ctx.buttonTextChangedLast ? 1.0 : 0.0,
+    option_text_changed_last: ctx.optionTextChangedLast ? 1.0 : 0.0,
     steps_since_observe: Math.min(ctx.stepsSinceObserve || 0, 10) / 10.0,
     remaining_plan_len: Math.min(ctx.remainingPlanLen || 0, 8) / 8.0,
     next_is_click: a && a.action_type === "click" ? 1.0 : 0.0,
@@ -346,8 +412,8 @@ function relu(x) {
   return x > 0 ? x : 0;
 }
 
-// Evaluate a gate exported by soa.gate. The default is a logistic baseline; newer
-// runs may export an MLP gate with one hidden layer.
+// 评估 soa.gate 导出的 gate。默认是 logistic baseline；
+// 较新的运行也可能导出一层隐藏层的 MLP gate。
 export function gateProbability(gateModel, features) {
   const names = gateModel.features || OBS_FEATURES;
   if (gateModel.model_type === "mlp") {

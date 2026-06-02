@@ -87,6 +87,55 @@
       ]
     },
     {
+      "task_id": "profile-preview-ada",
+      "benchmark": "soa-diagnostic",
+      "family": "stable_sequence",
+      "difficulty": "compositional",
+      "tags": ["balanced", "profile", "static", "multi_step"],
+      "instruction": "Fill the profile with first name Ada, last name Lovelace, role Researcher, enable the email digest, choose Daily, and preview the profile.",
+      "success_status": "Profile preview ready: Ada Lovelace - Researcher - Daily",
+      "actions": [
+        {"action_type": "fill", "target": "#profile-first", "text": "Ada", "risk": "safe"},
+        {"action_type": "fill", "target": "#profile-last", "text": "Lovelace", "risk": "safe"},
+        {"action_type": "fill", "target": "#profile-role", "text": "Researcher", "risk": "safe"},
+        {"action_type": "check", "target": "#profile-newsletter", "risk": "safe"},
+        {"action_type": "select", "target": "#profile-digest", "text": "Daily", "risk": "safe"},
+        {"action_type": "click", "target": "#profile-preview", "risk": "safe"}
+      ]
+    },
+    {
+      "task_id": "profile-preview-grace",
+      "benchmark": "soa-diagnostic",
+      "family": "stable_sequence",
+      "difficulty": "compositional",
+      "tags": ["balanced", "profile", "static", "multi_step"],
+      "instruction": "Fill the profile with first name Grace, last name Hopper, role Engineer, enable the email digest, choose Monthly, and preview the profile.",
+      "success_status": "Profile preview ready: Grace Hopper - Engineer - Monthly",
+      "actions": [
+        {"action_type": "fill", "target": "#profile-first", "text": "Grace", "risk": "safe"},
+        {"action_type": "fill", "target": "#profile-last", "text": "Hopper", "risk": "safe"},
+        {"action_type": "fill", "target": "#profile-role", "text": "Engineer", "risk": "safe"},
+        {"action_type": "check", "target": "#profile-newsletter", "risk": "safe"},
+        {"action_type": "select", "target": "#profile-digest", "text": "Monthly", "risk": "safe"},
+        {"action_type": "click", "target": "#profile-preview", "risk": "safe"}
+      ]
+    },
+    {
+      "task_id": "profile-preview-katherine",
+      "benchmark": "soa-diagnostic",
+      "family": "stable_sequence",
+      "difficulty": "atomic",
+      "tags": ["balanced", "profile", "static"],
+      "instruction": "Fill the profile with first name Katherine, last name Johnson, role Analyst, leave the digest unchecked, and preview the profile.",
+      "success_status": "Profile preview ready: Katherine Johnson - Analyst - No digest",
+      "actions": [
+        {"action_type": "fill", "target": "#profile-first", "text": "Katherine", "risk": "safe"},
+        {"action_type": "fill", "target": "#profile-last", "text": "Johnson", "risk": "safe"},
+        {"action_type": "fill", "target": "#profile-role", "text": "Analyst", "risk": "safe"},
+        {"action_type": "click", "target": "#profile-preview", "risk": "safe"}
+      ]
+    },
+    {
       "task_id": "shop-add-notebook-async-fast",
       "benchmark": "soa-diagnostic",
       "family": "async_results",

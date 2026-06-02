@@ -1,27 +1,83 @@
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 let miniwobServer = null;
+const here = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(here, "..", "..", "..");
 
 function html(contentType, body) {
   return { contentType, body };
 }
 
-function resolveMiniwobHtmlRoot(task) {
+function resolveResourceDir(root, name) {
+  const direct = path.join(root, name);
+  if (fs.existsSync(direct) && fs.statSync(direct).isDirectory()) return direct;
+  if (fs.existsSync(direct) && fs.statSync(direct).isFile()) {
+    const pointer = fs.readFileSync(direct, "utf-8").trim();
+    if (pointer && fs.existsSync(pointer) && fs.statSync(pointer).isDirectory()) return pointer;
+  }
+  return null;
+}
+
+function installedMiniwobHtmlRoots() {
+  const commands = [
+    ["python", ["-c", "import pathlib, miniwob; print(pathlib.Path(miniwob.__file__).resolve().parent / 'html')"]],
+    ["py", ["-3", "-c", "import pathlib, miniwob; print(pathlib.Path(miniwob.__file__).resolve().parent / 'html')"]],
+  ];
+  const roots = [];
+  for (const [cmd, args] of commands) {
+    const result = spawnSync(cmd, args, { encoding: "utf-8", timeout: 3000, windowsHide: true });
+    if (result.status === 0) {
+      const root = result.stdout.trim();
+      if (root && fs.existsSync(root)) roots.push(root);
+    }
+  }
+  return [...new Set(roots)];
+}
+
+function resolveMiniwobLayout(task) {
   const candidates = [
     process.env.SOA_MINIWOB_HTML_ROOT,
     task.miniwob_html_root,
+    path.join(repoRoot, "external", "miniwob_site"),
     path.resolve(process.cwd(), ".conda311", "lib", "python3.11", "site-packages", "miniwob", "html"),
+    ...installedMiniwobHtmlRoots(),
   ].filter(Boolean);
 
   for (const candidate of candidates) {
-    const miniwobDir = path.join(candidate, "miniwob");
-    const coreDir = path.join(candidate, "core");
-    if (fs.existsSync(miniwobDir) && fs.existsSync(coreDir)) return candidate;
+    const root = path.resolve(candidate);
+    const coreRoot = resolveResourceDir(root, "core");
+    const commonRoot = resolveResourceDir(root, "common");
+    const flightRoot = resolveResourceDir(root, "flight");
+
+    const officialMiniwobRoot = path.join(root, "miniwob");
+    if (fs.existsSync(officialMiniwobRoot) && fs.statSync(officialMiniwobRoot).isDirectory() && coreRoot && commonRoot) {
+      return {
+        cacheKey: `${officialMiniwobRoot}|${coreRoot}|${commonRoot}|${flightRoot || ""}`,
+        miniwobRoot: officialMiniwobRoot,
+        coreRoot,
+        commonRoot,
+        flightRoot,
+      };
+    }
+
+    const hasFlatHtml = fs.existsSync(path.join(root, `${task.subdomain || "click-button"}.html`));
+    if (hasFlatHtml && coreRoot && commonRoot) {
+      return {
+        cacheKey: `${root}|${coreRoot}|${commonRoot}|${flightRoot || ""}`,
+        miniwobRoot: root,
+        coreRoot,
+        commonRoot,
+        flightRoot,
+      };
+    }
   }
   throw new Error(
-    "MiniWoB HTML root not found. Set SOA_MINIWOB_HTML_ROOT or install the MiniWoB package into .conda311.",
+    "MiniWoB HTML root not found. Set SOA_MINIWOB_HTML_ROOT to a directory containing miniwob/, core/, and common/. " +
+      "A flat mirror is also supported if it contains the task HTML files plus usable core/ and common/ resource directories.",
   );
 }
 
@@ -42,22 +98,22 @@ function getMime(filename) {
   return "text/plain; charset=utf-8";
 }
 
-function createServerHandler(htmlRoot) {
+function createServerHandler(layout) {
   return (req, res) => {
     try {
       const reqPath = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
       let filePath;
       if (reqPath.startsWith("/core/")) {
-        filePath = safeJoin(path.join(htmlRoot, "core"), reqPath.replace("/core/", ""));
+        filePath = safeJoin(layout.coreRoot, reqPath.replace("/core/", ""));
       } else if (reqPath.startsWith("/common/")) {
-        filePath = safeJoin(path.join(htmlRoot, "common"), reqPath.replace("/common/", ""));
+        filePath = safeJoin(layout.commonRoot, reqPath.replace("/common/", ""));
       } else if (reqPath.startsWith("/flight/")) {
-        filePath = safeJoin(path.join(htmlRoot, "flight"), reqPath.replace("/flight/", ""));
+        filePath = layout.flightRoot ? safeJoin(layout.flightRoot, reqPath.replace("/flight/", "")) : null;
       } else {
         const rel = reqPath === "/" ? "index.html" : reqPath.slice(1);
-        filePath = safeJoin(path.join(htmlRoot, "miniwob"), rel);
+        filePath = safeJoin(layout.miniwobRoot, rel);
       }
-      if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+      if (!filePath || !fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
         res.writeHead(404, html("text/plain; charset=utf-8", "Not found"));
         res.end("Not found");
         return;
@@ -72,14 +128,16 @@ function createServerHandler(htmlRoot) {
 }
 
 async function ensureMiniwobServer(task) {
-  const htmlRoot = resolveMiniwobHtmlRoot(task);
-  if (miniwobServer?.htmlRoot === htmlRoot) return miniwobServer;
+  const layout = resolveMiniwobLayout(task);
+  if (miniwobServer?.cacheKey === layout.cacheKey) return miniwobServer;
 
-  const server = http.createServer(createServerHandler(htmlRoot));
+  const server = http.createServer(createServerHandler(layout));
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  server.unref();
   const addr = server.address();
   miniwobServer = {
-    htmlRoot,
+    cacheKey: layout.cacheKey,
+    layout,
     server,
     baseUrl: `http://${addr.address}:${addr.port}/`,
   };
