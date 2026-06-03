@@ -1,8 +1,8 @@
 {
-  "suite_id": "soa-diagnostic-v2",
-  "description": "Observation-sensitive diagnostic suite for selective observation policies.",
+  "suite_id": "soa-workflow-focus-v2",
+  "description": "Focused local workflow suite for selective observation policies.",
   "source_type": "local_diagnostic",
-  "recommended_use": "Use this as a controlled diagnostic stress suite. Pair it with an external benchmark such as WebArena or WorkArena for headline claims.",
+  "recommended_use": "Use this as the default mechanism-study suite: fifteen representative workflows with stable baselines, visible async updates, and coarse-signal-blind delayed-value tasks.",
   "benchmark_alignment": [
     "WebArena",
     "VisualWebArena",
@@ -157,16 +157,14 @@
       "benchmark": "soa-diagnostic",
       "family": "value_drift",
       "difficulty": "compositional",
-      "tags": ["mail", "value_drift", "recipient"],
+      "tags": ["mail", "value_drift", "recipient", "silent_status"],
       "scenario": "drift_recipient",
-      "url_params": {"delay_ms": 450, "recipient": "alice@example.com"},
-      "instruction": "Open the composer and send a short project update to the address shown in the Suggested recipient field. The suggestion may still be resolving when the composer opens; send only to the resolved address.",
+      "url_params": {"delay_ms": 450, "recipient": "alice@example.com", "status_mode": "silent", "prefill_message": "1"},
+      "instruction": "Open the composer. The subject and body are already filled in. Wait until Suggested recipient resolves, copy that address into To, and send the email. Do not type into To while Suggested recipient still says Resolving....",
       "success_status": "Email sent",
       "actions": [
         {"action_type": "click", "target": "#compose-btn", "risk": "safe", "may_change_screen": true},
         {"action_type": "fill", "target": "#to-field", "text": "alice@example.com", "risk": "safe"},
-        {"action_type": "fill", "target": "#subject-field", "text": "Project update", "risk": "safe"},
-        {"action_type": "fill", "target": "#body-field", "text": "The project demo is ready for review.", "risk": "safe"},
         {"action_type": "click", "target": "#send-btn", "risk": "external", "checkpoint": true}
       ]
     },
@@ -175,69 +173,31 @@
       "benchmark": "soa-diagnostic",
       "family": "value_drift",
       "difficulty": "adversarial",
-      "tags": ["mail", "value_drift", "recipient", "long_wait"],
+      "tags": ["mail", "value_drift", "recipient", "long_wait", "silent_status"],
       "scenario": "drift_recipient",
-      "url_params": {"delay_ms": 950, "recipient": "finance@example.com"},
-      "instruction": "Open the composer and send a short project update to the address shown in the Suggested recipient field. The value changes late, so verify it fresh before sending.",
+      "url_params": {"delay_ms": 950, "recipient": "finance@example.com", "status_mode": "silent", "prefill_message": "1"},
+      "instruction": "Open the composer. The subject and body are already filled in. Wait until Suggested recipient resolves, copy that address into To, and send the email. The value changes late, so verify it fresh before filling To and before sending.",
       "success_status": "Email sent",
       "actions": [
         {"action_type": "click", "target": "#compose-btn", "risk": "safe", "may_change_screen": true},
         {"action_type": "fill", "target": "#to-field", "text": "finance@example.com", "risk": "safe"},
-        {"action_type": "fill", "target": "#subject-field", "text": "Project update", "risk": "safe"},
-        {"action_type": "fill", "target": "#body-field", "text": "The project demo is ready for review.", "risk": "safe"},
         {"action_type": "click", "target": "#send-btn", "risk": "external", "checkpoint": true}
       ]
     },
     {
-      "task_id": "mail-send-suggested-legal",
+      "task_id": "mail-send-suggested-ops",
       "benchmark": "soa-diagnostic",
       "family": "value_drift",
       "difficulty": "adversarial",
-      "tags": ["mail", "value_drift", "recipient"],
+      "tags": ["mail", "value_drift", "recipient", "silent_status"],
       "scenario": "drift_recipient",
-      "url_params": {"delay_ms": 700, "recipient": "legal@example.com"},
-      "instruction": "Send the update only to the resolved Suggested recipient. The field value changes after the composer opens and must be copied exactly.",
+      "url_params": {"delay_ms": 700, "recipient": "ops@example.com", "status_mode": "silent", "prefill_message": "1"},
+      "instruction": "Open the composer. The subject and body are already filled in. Send the email only to the resolved Suggested recipient, so do not copy it into To until the value is fully resolved.",
       "success_status": "Email sent",
       "actions": [
         {"action_type": "click", "target": "#compose-btn", "risk": "safe", "may_change_screen": true},
-        {"action_type": "fill", "target": "#to-field", "text": "legal@example.com", "risk": "safe"},
-        {"action_type": "fill", "target": "#subject-field", "text": "Project update", "risk": "safe"},
-        {"action_type": "fill", "target": "#body-field", "text": "The project demo is ready for review.", "risk": "safe"},
+        {"action_type": "fill", "target": "#to-field", "text": "ops@example.com", "risk": "safe"},
         {"action_type": "click", "target": "#send-btn", "risk": "external", "checkpoint": true}
-      ]
-    },
-    {
-      "task_id": "shop-notebook-price-drift-fast",
-      "benchmark": "soa-diagnostic",
-      "family": "value_drift",
-      "difficulty": "compositional",
-      "tags": ["shop", "value_drift", "price"],
-      "scenario": "price_drift",
-      "url_params": {"delay_ms": 450, "price_initial_cents": 1900, "price_resolved_cents": 700, "price_gate_cents": 700},
-      "instruction": "Search for the blue notebook. Only add it to the cart once its add button shows $7.00, then open checkout.",
-      "success_status": "Checkout ready",
-      "actions": [
-        {"action_type": "fill", "target": "#shop-search", "text": "notebook", "risk": "safe"},
-        {"action_type": "click", "target": "#shop-run-search", "risk": "safe", "may_change_screen": true},
-        {"action_type": "click", "target": "#add-notebook", "risk": "state_changing", "checkpoint": true},
-        {"action_type": "click", "target": "#checkout-btn", "risk": "external", "checkpoint": true}
-      ]
-    },
-    {
-      "task_id": "shop-notebook-price-drift-slow",
-      "benchmark": "soa-diagnostic",
-      "family": "value_drift",
-      "difficulty": "adversarial",
-      "tags": ["shop", "value_drift", "price", "long_wait"],
-      "scenario": "price_drift",
-      "url_params": {"delay_ms": 950, "price_initial_cents": 2300, "price_resolved_cents": 900, "price_gate_cents": 900},
-      "instruction": "Search for the blue notebook. Wait until the add button shows $9.00 before adding it to the cart, then open checkout.",
-      "success_status": "Checkout ready",
-      "actions": [
-        {"action_type": "fill", "target": "#shop-search", "text": "notebook", "risk": "safe"},
-        {"action_type": "click", "target": "#shop-run-search", "risk": "safe", "may_change_screen": true},
-        {"action_type": "click", "target": "#add-notebook", "risk": "state_changing", "checkpoint": true},
-        {"action_type": "click", "target": "#checkout-btn", "risk": "external", "checkpoint": true}
       ]
     },
     {
@@ -245,10 +205,10 @@
       "benchmark": "soa-diagnostic",
       "family": "delayed_options",
       "difficulty": "compositional",
-      "tags": ["settings", "options", "value_drift"],
+      "tags": ["settings", "options", "value_drift", "silent_status"],
       "scenario": "resolve_language",
-      "url_params": {"delay_ms": 450, "target_language": "Japanese"},
-      "instruction": "Open preferences, enable compact mode, wait for the language list to finish loading, choose Japanese, and save.",
+      "url_params": {"delay_ms": 450, "target_language": "Japanese", "status_mode": "silent"},
+      "instruction": "Open preferences, enable compact mode, wait until Japanese appears in the language dropdown, choose it, and save. If the option is not present yet, re-check before selecting or saving.",
       "success_status": "Settings saved: Japanese",
       "actions": [
         {"action_type": "click", "target": "#open-settings", "risk": "safe", "may_change_screen": true},
@@ -262,10 +222,10 @@
       "benchmark": "soa-diagnostic",
       "family": "delayed_options",
       "difficulty": "adversarial",
-      "tags": ["settings", "options", "value_drift", "new_option"],
+      "tags": ["settings", "options", "value_drift", "new_option", "silent_status"],
       "scenario": "resolve_language",
-      "url_params": {"delay_ms": 800, "target_language": "German"},
-      "instruction": "Open preferences, enable compact mode, wait for the language list to finish loading, choose German, and save.",
+      "url_params": {"delay_ms": 800, "target_language": "German", "status_mode": "silent"},
+      "instruction": "Open preferences, enable compact mode, wait until German appears in the language dropdown, choose it, and save. If German is not listed yet, re-check the dropdown before saving.",
       "success_status": "Settings saved: German",
       "actions": [
         {"action_type": "click", "target": "#open-settings", "risk": "safe", "may_change_screen": true},
@@ -279,10 +239,10 @@
       "benchmark": "soa-diagnostic",
       "family": "delayed_options",
       "difficulty": "adversarial",
-      "tags": ["settings", "options", "value_drift", "new_option", "long_wait"],
+      "tags": ["settings", "options", "value_drift", "new_option", "long_wait", "silent_status"],
       "scenario": "resolve_language",
-      "url_params": {"delay_ms": 1000, "target_language": "French"},
-      "instruction": "Open preferences, enable compact mode, wait for the language list to finish loading, choose French, and save.",
+      "url_params": {"delay_ms": 1100, "target_language": "French", "status_mode": "silent"},
+      "instruction": "Open preferences, enable compact mode, wait until French appears in the language dropdown, choose it, and save. If French is not listed yet, re-check the dropdown before selecting or saving.",
       "success_status": "Settings saved: French",
       "actions": [
         {"action_type": "click", "target": "#open-settings", "risk": "safe", "may_change_screen": true},

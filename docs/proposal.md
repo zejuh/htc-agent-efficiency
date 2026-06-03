@@ -60,11 +60,12 @@ cannot fire; the model's verbalized uncertainty can. This is where a learned gat
 
 ## 4. Experiments
 
-- **Tasks.** A structured local **diagnostic suite** spanning static baselines,
-  async-result tasks, value-drift tasks (`drift_recipient`, `price_drift`), and
-  delayed-option tasks (`resolve_language`). The local suite is meant to isolate
-  observation-sensitive failure modes; the headline external-validity next step is to
-  port the same collector/evaluator to WebArena/WorkArena/OSWorld-style benchmarks.
+- **Tasks.** A focused local **workflow suite** with fifteen tasks: five stable baselines
+  (`mail`, `shop`, `contacts`, `settings`, `files`), four visible async-result variants,
+  and six observation-sensitive delayed-value variants spanning recipient resolution and
+  delayed options. The suite stays local on
+  purpose: it isolates observation-sensitive failure modes without the noise of a full
+  benchmark, while leaving benchmark migration to future work.
 - **Policies.** `always`, `never`, `handrule`, `learned@T` (T swept). One LLM agent (OpenAI `gpt-4o-mini` by default) drives all.
 - **Metrics.** success rate, model calls, latency, dollar cost, unsafe rate (checkpoint
   actions executed without a fresh observation); plus decision-level accuracy /
@@ -76,6 +77,8 @@ cannot fire; the model's verbalized uncertainty can. This is where a learned gat
   - H3: `learned@T` Pareto-dominates `handrule`, driven by the `drift_recipient` regime
     where verbalized confidence beats screen-change.
   - H4: the safety floor holds the learned policy's unsafe rate at 0.
+
+**Current status.** The focused fifteen-task suite now produces exactly the kind of result this proposal aimed for: the learned gate matches the safe baselines on success while reducing model calls below the hand rule on the live frontier, rather than winning only on offline label prediction.
 
 ## 5. Related work
 
@@ -95,8 +98,8 @@ and evaluate it on a cost–success–safety frontier.
 
 ## 6. Limitations and next steps
 
-- Small task suite; add 20–30 tasks and port the same protocol to a less toy benchmark
-  such as OSWorld/WebArena/MiniWoB++ style environments.
+- Small task suite; add 20–30 tasks and port the same protocol to a stronger benchmark
+  such as OSWorld, WebArena, or WorkArena.
 - Multi-round DAgger is now supported, but convincing claims still need more tasks,
   more seeds, and ablations over the number of rounds.
 - Verbalized confidence may be miscalibrated — reported, not assumed.

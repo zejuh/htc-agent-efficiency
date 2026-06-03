@@ -55,6 +55,10 @@ main {
   padding: 24px;
 }
 
+body[data-active-app] main {
+  grid-template-columns: minmax(320px, 760px);
+}
+
 .workspace {
   background: #ffffff;
   border: 1px solid #dce1ea;
@@ -173,4 +177,3 @@ label {
     text-align: left;
   }
 }
-

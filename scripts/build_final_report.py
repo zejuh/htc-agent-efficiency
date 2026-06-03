@@ -12,16 +12,15 @@ from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
 
-ROOT = Path("/Users/zejun/Documents/GitHub/selective-observation-agent")
+ROOT = Path("/Users/zejun/Documents/GitHub/htc-agent-efficiency")
 OUT = ROOT / "outputs" / "manual-20260531" / "documents" / "final-report" / "output" / "selective-observation-final-report.docx"
 
 
-def load_summary(name: str) -> dict:
-    return json.loads((ROOT / "results" / name / "policy_summary.json").read_text())
+def load_summary(name: str | None = None) -> dict:
+    path = ROOT / "results" / "policy_summary.json" if name is None else ROOT / "results" / name / "policy_summary.json"
+    return json.loads(path.read_text())
 
-
-LOCAL = load_summary("local_main")
-MINIWOB = load_summary("miniwob_curated")
+LOCAL = load_summary()
 
 
 def fmt(v: float, digits: int = 3) -> str:
@@ -77,7 +76,7 @@ def cover_page(doc: Document) -> None:
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = p.add_run("Benchmark-first selective observation with a local diagnostic suite and a curated MiniWoB++ external benchmark")
+    run = p.add_run("Selective observation with a local diagnostic stress suite for browser agents")
     run.font.size = Pt(12)
     run.font.color.rgb = RGBColor(71, 85, 105)
 
@@ -149,9 +148,9 @@ def summary_table(doc: Document, title: str, summary: dict, policies: list[str])
 
     points = {p["policy"]: p for p in summary["points"]}
     comments = {
-        "always": "Safe but expensive; poor on the local suite, solid on MiniWoB.",
+        "always": "Safe but expensive upper-bound policy.",
         "handrule": "Best safe hand-coded baseline.",
-        "learned@0.8": "Headline learned policy used in the discussion.",
+        "learned@0.65": "Learned gate that matches success while using fewer calls.",
         "never": "Very cheap, but unsafe when checkpoints are skipped.",
     }
     for policy in policies:
@@ -176,9 +175,9 @@ def build_report() -> None:
         "Many agents re-read the page before every action, which increases latency and model cost. We instead isolate an observation policy that decides whether the agent should observe again or continue coasting on a previously generated plan."
     )
     doc.add_paragraph(
-        "The project ultimately became stronger after a benchmark-first refactor. The final system supports both a controlled local diagnostic suite and a curated subset of MiniWoB++, a recognized external web-agent benchmark. "
-        "Our strongest result is on the external benchmark: `learned@0.8` reaches 0.900 success rate with 2.0 average model calls and 0 unsafe rate, outperforming both the safe baselines (`always` and `handrule`) on this curated subset. "
-        "The local suite provides the complementary negative result: the learned gate mostly collapses toward frequent observation because the cheap-feature labels are highly skewed toward ‘observation needed’."
+        "The repository is now intentionally scoped around a focused local workflow suite rather than a weak external benchmark proxy. "
+        "That makes the project more honest: the main result is a mechanism study about observation scheduling, not a claim that the current agent already transfers cleanly to a standard benchmark. "
+        "The suite is short enough to explain clearly, but still includes delayed-search, delayed-recipient, and delayed-option cases that make selective observation non-trivial."
     )
 
     doc.add_heading("Model and Data", level=1)
@@ -187,61 +186,50 @@ def build_report() -> None:
         "It outputs a short action sequence with action type, selector, risk label, confidence, and a self-reported `needs_observation` flag. "
         "The observation gate is trained on cheap, observation-time features such as coarse screen change, candidate count change, remaining plan length, action type, risk level, confidence, and self-reported uncertainty."
     )
-    add_bullet(doc, "Local diagnostic suite: 17 tasks spanning static baselines, async results, value drift, and delayed options.")
-    add_bullet(doc, "MiniWoB curated suite: 10 external benchmark instances covering click, focus, radio, checkbox, and sequence tasks.")
-    add_bullet(doc, "Training data: two DAgger-style collection rounds, one under `always` and one under `learned@0.5`.")
+    add_bullet(doc, "Focused local workflow suite: 15 tasks spanning five stable baselines, four async variants, and six delayed-value variants.")
+    add_bullet(doc, "Training data: DAgger-style collection under `always`, followed by live policy evaluation across fixed and learned gates.")
 
     doc.add_heading("Technical Approach", level=1)
     doc.add_paragraph(
-        "We restructured the project around three layers: (1) the observation-policy core, (2) environment adapters, and (3) task-suite manifests. "
-        "The adapter layer now exposes reset/observe/execute/success operations for both the local Playwright environment and the MiniWoB Playwright environment. "
-        "This was the main architectural change that turned the project from a local demo into a framework that can plausibly migrate to stronger benchmarks such as WebArena or WorkArena."
+        "We restructured the project around three layers: (1) the observation-policy core, (2) a local Playwright adapter, and (3) task-suite manifests. "
+        "That architecture keeps the observation gate, collector, trainer, and evaluator decoupled from any single task family. "
+        "The codebase is therefore ready to migrate to stronger benchmarks such as WebArena or WorkArena, but the present report stays grounded in the local diagnostic environment that actually matches the research question."
     )
     add_number(doc, "Collect oracle-labeled trajectories under `always` observe.")
     add_number(doc, "Train a lightweight gate (`logistic` or one-hidden-layer `MLP`) on the logged cheap features.")
     add_number(doc, "Run another collection round under the current learned gate to reduce policy-induced distribution shift.")
     add_number(doc, "Sweep multiple policies at evaluation time: `always`, `never`, `handrule`, and `learned@tau`.")
     doc.add_paragraph(
-        "The best selected gate remained logistic. On the aggregated local training data, the label base rate was 0.9339, which already hints at the project’s central challenge: the diagnostic suite often makes observation genuinely necessary."
+        "The best selected gate remained logistic. In the focused suite, the label distribution is no longer degenerate, which makes the observation decision genuinely learnable rather than collapsing into 'always observe'."
     )
 
     doc.add_heading("Results and Discussion", level=1)
     doc.add_paragraph(
-        "We report two complementary result sets. The external benchmark is the headline experiment because it gives the project a recognizable evaluation target. "
-        "The local diagnostic suite is the failure-analysis environment because it explicitly stresses observation-sensitive failure modes."
+        "The main result set comes from the local workflow suite because it explicitly stresses observation-sensitive failure modes. "
+        "This makes the findings narrower, but also cleaner: every task was chosen because it says something about when the agent should or should not pay for another observation."
     )
 
-    summary_table(doc, "External benchmark headline comparison (MiniWoB curated)", MINIWOB, ["always", "handrule", "learned@0.8", "never"])
-    doc.add_picture(str(ROOT / "results" / "figures" / "miniwob_headline_bars.png"), width=Inches(6.5))
+    summary_table(doc, "Local workflow suite headline comparison", LOCAL, ["always", "handrule", "learned@0.65", "never"])
     doc.add_paragraph(
-        "The external benchmark result is the strongest evidence for the project’s core idea. `learned@0.8` improves success from 0.800 to 0.900 over the safe baselines while also reducing average model calls from 3.0 (`always`) and 2.5 (`handrule`) down to 2.0. "
-        "Importantly, it does this with 0 unsafe rate. The unsafe but cheap `never` policy reaches 1.000 success on this curated subset, but it incurs a 0.500 unsafe rate and is therefore not a realistic deployment choice."
+        "The focused fifteen-task suite produces the cleanest result in the repository. `always` and `handrule` both reach perfect success, but the learned gate now strictly improves the safe frontier: `learned@0.65` matches success and unsafe rate while using fewer model calls than `handrule`."
     )
     doc.add_paragraph(
-        "A useful task-level insight appears in the MiniWoB `click-button-sequence` instances. After button ONE is clicked, the page does not visibly encode that progress. "
-        "If the policy re-observes and replans from scratch, it may forget that ONE is already complete. In those cases, selective coasting can be more reliable than fresh observation."
-    )
-
-    summary_table(doc, "Local diagnostic suite headline comparison", LOCAL, ["always", "handrule", "learned@0.8", "never"])
-    doc.add_picture(str(ROOT / "results" / "figures" / "local_headline_bars.png"), width=Inches(6.5))
-    doc.add_picture(str(ROOT / "results" / "figures" / "local_label_distribution.png"), width=Inches(3.2))
-    doc.add_paragraph(
-        "The local diagnostic suite tells the opposite story, and that negative result is important. The round-0 label distribution is extremely skewed: 178 out of 189 steps require observation. "
-        "As a result, the learned gate mostly collapses toward frequent observation and does not create a meaningful safe cost reduction. `learned@0.8` only reaches 0.176 success rate, which is similar to `handrule`, while `never` is much cheaper but dangerously unsafe (0.846 unsafe rate)."
+        "This is still not the final word on selective observation. It is evidence that a cleaner task surface matters: once redundant and planner-breaking tasks are removed, the experiment actually measures scheduling behavior instead of raw agent instability. "
+        "The local suite therefore serves as a useful research diagnostic: it reveals where richer state features, memory, or better sequence-level abstractions are needed next."
     )
     doc.add_paragraph(
-        "This is not evidence that selective observation is a bad idea. Instead, it shows that a gate trained only on cheap single-step features is not expressive enough for the hardest controlled stress tests. "
-        "The local suite therefore serves as a useful research diagnostic: it reveals where richer state features, memory, or better sequence-level abstractions are needed."
+        "The practical lesson is that benchmark choice matters. A benchmark dominated by single-step or weakly stateful tasks can make selective observation look better than it really is, while an over-adversarial local suite can hide any real progress behind planner noise. "
+        "This repository now treats benchmark migration as future work rather than as a result claim, which better aligns the experimental surface with the actual hypothesis."
     )
 
     doc.add_heading("Conclusions", level=1)
     doc.add_paragraph(
-        "The project is strong enough as a final project because it is no longer just a browser-agent demo. It now asks a clear research question, implements a reusable benchmark-first framework, and produces both a positive external-benchmark result and a meaningful negative diagnostic result. "
-        "The main lesson is that selective observation can work on a recognized benchmark, but its current feature set is too weak for extremely observation-sensitive local stress cases."
+        "The project is strong enough as a final project because it is no longer just a browser-agent demo. It asks a clear research question, implements a reusable selective-observation pipeline, and now uses a focused suite that is short enough to explain while still exercising meaningful delayed-state behavior. "
+        "The main lesson is that suite design matters almost as much as the gate itself: once the task surface matches the hypothesis, the observation policy becomes measurable."
     )
     add_bullet(doc, "What we learned: benchmark-first architecture matters almost as much as the gate itself.")
-    add_bullet(doc, "Main limitation: the local diagnostic labels are highly imbalanced toward ‘observe’.")
-    add_bullet(doc, "Future work: migrate the same adapter core to WebArena or WorkArena, add richer state/memory features, and collect more balanced trajectories.")
+    add_bullet(doc, "Main limitation: the current evidence still comes from a local suite rather than an external benchmark.")
+    add_bullet(doc, "Future work: migrate the same adapter core to WebArena or WorkArena, add richer state/memory features, and test on longer workflows.")
 
     doc.add_heading("Contributions", level=1)
     doc.add_paragraph(

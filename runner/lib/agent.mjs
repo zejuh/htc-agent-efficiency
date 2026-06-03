@@ -52,6 +52,10 @@ Rules:
 - Only use a selector exactly as provided in the candidates. Never invent selectors.
 - Use "fill" for text boxes/textareas, "check" for checkboxes, "select" for dropdowns (put the option label in "text"), "click" for buttons/list items, "done" when the success condition is met.
 - Use candidate state to detect progress that has already happened: candidate.value for filled inputs, candidate.checked for checkboxes/radios, and candidate.selected_text for dropdowns. If the required value is already present, do not repeat the same form action; move on to the next needed action such as Submit.
+- Treat the status text as real workflow state. If the page already says a setup action succeeded or a panel/results view is open (for example "Composer open", "Suggested recipient ready", "Products filtered", "Contact opened", "Selected draft.txt", "Preferences open"), do NOT repeat the opener action that led there. Continue with the next unmet step inside that state.
+- Do not repeat the same opener action when its effect is already visible. Examples: after search results are visible, do not click Search again; after a folder is open, do not click Open folder again; after the composer is open, do not click Compose again.
+- When a task requires acting on a selected item first (such as renaming a file), select the item before filling or submitting any dependent form fields.
+- If a value is still loading or resolving, wait by planning no repeated opener clicks; resume once the status/value indicates readiness.
 - Do not emit "done" merely because an intermediate field is filled or an option is selected. If the instruction says to Submit/Save/Send and that button is still visible, include that action unless the task is already visibly complete.
 - Set "checkpoint": true and an appropriate "risk" when the action submits, sends, saves, renames, deletes, or checks out (externally visible or hard to reverse). Use "external" for send/checkout/submit, "irreversible" for delete/rename, "state_changing" for save/toggle, otherwise "safe".
 - For EACH action also report "confidence" in [0,1] that the action is correct given ONLY what you can currently see, and "needs_observation": true if you would want to look at the page again before doing it (e.g. a value may still be loading or may have changed).
@@ -173,7 +177,7 @@ export async function getCandidates(page) {
       if (el.tagName === "INPUT") return el.type || "input";
       return el.tagName.toLowerCase();
     }
-    return [...document.querySelectorAll("button,input,textarea,select,a,label,.alink,[role='button'],[data-contact],[data-file],[onclick]")]
+    return [...document.querySelectorAll("button,input,textarea,select,a,.alink,[role='button'],[data-contact],[data-file],[onclick]")]
       .filter((el) => visible(el) && !el.disabled)
       .map((el) => {
         const selectedText =
@@ -241,6 +245,35 @@ function parsePlan(text) {
   }
 }
 
+function candidateBySelector(candidates, selector) {
+  return candidates.find((candidate) => candidate.selector === selector) || null;
+}
+
+function isNoOpAction(action, candidates) {
+  if (!action || !action.selector) return false;
+  const candidate = candidateBySelector(candidates, action.selector);
+  if (!candidate) return false;
+  if (action.action_type === "fill") {
+    return String(candidate.value || "").trim() === String(action.text || "").trim();
+  }
+  if (action.action_type === "check") {
+    return Boolean(candidate.checked);
+  }
+  if (action.action_type === "select") {
+    return String(candidate.selected_text || "").trim() === String(action.text || "").trim();
+  }
+  return false;
+}
+
+function normalizePlannedActions(actions, candidates) {
+  const kept = [];
+  for (const action of actions || []) {
+    if (!kept.length && isNoOpAction(action, candidates)) continue;
+    kept.push(action);
+  }
+  return kept;
+}
+
 async function callOpenAI(messages) {
   const response = await fetch(OPENAI_URL, {
     method: "POST",
@@ -290,7 +323,7 @@ export async function planActions(task, observation) {
     output_tokens: u.completion_tokens || 0,
     cached_tokens: u.prompt_tokens_details?.cached_tokens || 0,
   };
-  return { actions: parsed.actions || [], usage, latency_ms };
+  return { actions: normalizePlannedActions(parsed.actions || [], observation.candidates || []), usage, latency_ms };
 }
 
 // ----- Observation feature contract -----------------------------------------

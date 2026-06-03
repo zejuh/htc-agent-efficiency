@@ -40,8 +40,8 @@ whether some `learned@T` Pareto-dominates `handrule`.
 ## Why the tasks are built the way they are
 
 The hand rule keys off a **coarse** screen-change signal (status text + the set of
-on-screen controls) — cheap, like real change detectors. Two task families create the
-regime where that is insufficient:
+on-screen controls) — cheap, like real change detectors. The focused suite mixes tasks
+where that signal is good enough with tasks where it is intentionally blind:
 
 - **async search** (`async_shop`, `async_contacts`): results render after a delay.
 - **drifting recipient** (`drift_recipient`): a "Suggested recipient" field is
@@ -50,14 +50,12 @@ regime where that is insufficient:
   Sending to the stale value is the wrong, externally-visible action. Here the hand rule
   cannot tell that re-observation is needed, but the model's **verbalized confidence**
   (and the coasting counter) can. This is the intellectual core of the comparison.
-- **price drift** (`price_drift`): the notebook's add button keeps the same selector, but
-  its visible price in the button label changes after a delay.
 - **delayed options** (`resolve_language`): the language dropdown keeps the same selector,
   but the correct option only appears after the settings panel finishes loading.
 
-The result is a **diagnostic suite** rather than a generic toy demo: the suite is
-explicitly built to stress observation-sensitive failure modes that selector-only or
-status-only heuristics miss.
+The result is a **focused workflow suite** rather than a generic toy demo: fifteen local
+tasks, five stable baselines, four visible async variants, and six coarse-signal-blind
+delayed-value tasks that stress the failure modes selector-only or status-only heuristics miss.
 
 ## How to run (live)
 
@@ -73,8 +71,8 @@ npm run collect                                   # -> data/oracle_steps.jsonl (
 python -m soa.gate --steps data/oracle_steps.jsonl --out results/gate_model.json --learner auto
 npm run evaluate -- --gate results/gate_model.json   # -> results/policy_report.md, pareto.svg
 
-# run only the adversarial value-drift family
-npm run evaluate -- --family value_drift --difficulty adversarial --gate results/gate_model.json
+# run only the delayed-option task
+npm run evaluate -- --family delayed_options --gate results/gate_model.json
 ```
 
 Useful env vars: `SOA_HEADFUL=1` (show the browser), `SOA_COLLECT_ROUNDS`,
@@ -111,9 +109,9 @@ npm install && npx playwright install chromium && npm run smoke
 - **Confidence intervals.** `runner/evaluate_policies.mjs` now attaches task-level
   bootstrap 95% confidence intervals to the live success/cost/safety frontier, so the
   main claim is not a point estimate only.
-- **Diagnostic-suite framing.** `tasks/tasks.json` is now a structured suite manifest
-  with task families, difficulty levels, tags, and observation-sensitive variants rather
-  than a flat list of eight demos.
+- **Focused suite framing.** `tasks/tasks.json` is now a structured fifteen-task manifest
+  with five stable workflows, four visible async variants, and six coarse-signal-blind delayed-value tasks rather than a long
+  grab bag of mostly redundant demos.
 - **Benchmark-ready task loading.** `runner/lib/task_suite.mjs` lets collection/evaluation
   load a suite manifest and filter by family/difficulty/tags, which makes it easier to
   keep this repo as a diagnostic layer while migrating headline experiments to
@@ -123,7 +121,7 @@ npm install && npx playwright install chromium && npm run smoke
 
 ```
 app/                       local GUI app (static + dynamic/adversarial scenarios)
-tasks/tasks.json           structured diagnostic suite manifest
+tasks/tasks.json           focused workflow suite manifest
 tasks/benchmark_catalog.json  recommended external headline benchmarks
 runner/lib/agent.mjs       shared agent + the observation FEATURE CONTRACT
 runner/lib/task_suite.mjs  suite loading / filtering / summary helpers
@@ -161,3 +159,7 @@ agents" before final submission to confirm no direct competitor appeared.)
 - Model uncertainty is currently verbalized (a self-reported `confidence` field). OpenAI
   Chat Completions can also return token `logprobs`, so using true token-level confidence
   as an additional gate feature is a natural extension.
+
+## Current headline
+
+On the default `soa-workflow-focus-v2` suite in [results/policy_report.md](/Users/zejun/Documents/GitHub/htc-agent-efficiency/results/policy_report.md:1), the learned gate now cleanly beats the hand rule on the safe frontier: `handrule` reaches `1.000` success with `3.07` model calls on average, while `learned@0.65` and `learned@0.9` also reach `1.000` success and `0.000` unsafe rate with only `2.73` model calls.

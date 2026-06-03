@@ -25,12 +25,15 @@ const taskLabel = document.querySelector("#task-label");
 
 const params = new URL(window.location.href).searchParams;
 const SCENARIO = params.get("scenario") || "";
+const STATUS_MODE = params.get("status_mode") || "";
 const DELAY_MS = Number(params.get("delay_ms") || 450);
 const SUGGESTED_RECIPIENT = params.get("recipient") || "alice@example.com";
 const TARGET_LANGUAGE = params.get("target_language") || "Japanese";
+const PREFILL_MESSAGE = params.get("prefill_message") === "1";
 const PRICE_INITIAL_CENTS = Number(params.get("price_initial_cents") || 1200);
 const PRICE_RESOLVED_CENTS = Number(params.get("price_resolved_cents") || 700);
 const PRICE_GATE_CENTS = Number(params.get("price_gate_cents") || PRICE_RESOLVED_CENTS);
+const SILENT_STATUS = STATUS_MODE === "silent";
 
 const state = {
   sent: false,
@@ -75,6 +78,26 @@ function setTaskLabel() {
   taskLabel.textContent = params.get("task") || "Ready";
 }
 
+function inferTaskApp(taskId) {
+  if (!taskId) return "";
+  if (taskId.startsWith("mail-")) return "mail";
+  if (taskId.startsWith("shop-")) return "shop";
+  if (taskId.startsWith("contacts-")) return "contacts";
+  if (taskId.startsWith("settings-")) return "settings";
+  if (taskId.startsWith("files-")) return "files";
+  return "";
+}
+
+function scopeWorkspaceToTask() {
+  const taskId = params.get("task") || "";
+  const activeApp = inferTaskApp(taskId);
+  if (!activeApp) return;
+  document.body.dataset.activeApp = activeApp;
+  document.querySelectorAll(".workspace").forEach((section) => {
+    section.classList.toggle("hidden", section.dataset.app !== activeApp);
+  });
+}
+
 function formatUsd(cents) {
   return `$${(cents / 100).toFixed(2)}`;
 }
@@ -99,19 +122,40 @@ function setLanguageOptions(labels, selected) {
 // ----- Mail -----------------------------------------------------------------
 
 const suggestedRow = byId("suggested-recipient").closest("label");
+const mailInbox = document.querySelector(".inbox");
+
+function updateComposerStatus() {
+  if (SCENARIO === "drift_recipient" && SILENT_STATUS) return;
+  const toFilled = byId("to-field").value.trim().length > 0;
+  const subjectFilled = byId("subject-field").value.trim().length > 0;
+  const bodyFilled = byId("body-field").value.trim().length > 0;
+  if (toFilled && subjectFilled && bodyFilled) {
+    setStatus("Draft ready");
+  } else if (toFilled && subjectFilled) {
+    setStatus("Subject entered");
+  } else if (toFilled) {
+    setStatus("Recipient entered");
+  }
+}
 
 byId("compose-btn").addEventListener("click", () => {
   show(byId("composer"));
+  hide(byId("compose-btn"));
+  if (mailInbox) hide(mailInbox);
+  byId("to-field").value = "";
+  byId("subject-field").value = PREFILL_MESSAGE ? "Project update" : "";
+  byId("body-field").value = PREFILL_MESSAGE ? "The project demo is ready for review." : "";
   byId("to-field").focus();
   if (SCENARIO === "drift_recipient") {
     show(suggestedRow);
     state.suggestedResolved = false;
     byId("suggested-recipient").value = "Resolving...";
-    setStatus("Resolving recipient");
+    setStatus(SILENT_STATUS ? "Composer open" : "Resolving recipient");
     setLoading(true);
     setTimeout(() => {
       byId("suggested-recipient").value = SUGGESTED_RECIPIENT;
       state.suggestedResolved = true;
+      if (!SILENT_STATUS) setStatus("Suggested recipient ready");
       setLoading(false);
     }, DELAY_MS);
   } else {
@@ -138,6 +182,10 @@ byId("send-btn").addEventListener("click", () => {
   state.sent = Boolean(filled);
   setStatus(filled ? "Email sent" : "Email incomplete");
 });
+
+byId("to-field").addEventListener("input", updateComposerStatus);
+byId("subject-field").addEventListener("input", updateComposerStatus);
+byId("body-field").addEventListener("input", updateComposerStatus);
 
 // ----- Shop -----------------------------------------------------------------
 
@@ -220,10 +268,11 @@ document.querySelectorAll(".contact-row").forEach((row) => {
 
 byId("open-settings").addEventListener("click", () => {
   show(byId("settings-panel"));
+  hide(byId("open-settings"));
   if (SCENARIO === "resolve_language") {
     state.languagesResolved = false;
     setLanguageOptions(["English", "Spanish", "Loading..."], "English");
-    setStatus("Loading languages");
+    setStatus(SILENT_STATUS ? "Preferences open" : "Loading languages");
     setLoading(true);
     setTimeout(() => {
       setLanguageOptions(["English", "Spanish", TARGET_LANGUAGE], TARGET_LANGUAGE);
@@ -249,6 +298,7 @@ byId("save-settings").addEventListener("click", () => {
 
 byId("open-files").addEventListener("click", () => {
   show(byId("file-panel"));
+  hide(byId("open-files"));
   setStatus("Folder open");
 });
 
@@ -274,6 +324,7 @@ byId("rename-btn").addEventListener("click", () => {
 
 // Hide the suggested-recipient row unless the drift scenario uses it.
 hide(suggestedRow);
+if (SCENARIO === "drift_recipient" && PREFILL_MESSAGE && mailInbox) hide(mailInbox);
 setNotebookPrice(PRICE_INITIAL_CENTS);
 setLanguageOptions(["English", "Spanish", "Japanese"], "English");
 
@@ -282,5 +333,6 @@ window.soaDemo = {
   getStatus: () => statusEl.textContent,
 };
 
+scopeWorkspaceToTask();
 setTaskLabel();
 setStatus("Ready");
