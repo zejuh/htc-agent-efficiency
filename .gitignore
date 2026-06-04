@@ -4,6 +4,11 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 
+# macOS / Office junk
+.DS_Store
+~$*
+
+node_modules/
 browser_demo/node_modules/
 
 /results/

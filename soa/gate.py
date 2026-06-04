@@ -45,6 +45,73 @@ def feature_names(rows: list[dict]) -> list[str]:
     return ["bias", *rest]
 
 
+FEATURE_PRESETS: dict[str, list[str]] = {
+    "all": [],
+    "compact_core": [
+        "bias",
+        "no_plan",
+        "screen_changed_last",
+        "candidates_changed_last",
+        "steps_since_observe",
+        "remaining_plan_len",
+        "next_risk_state_changing",
+        "verbalized_confidence",
+        "verbalized_needs_observation",
+    ],
+    "compact_plus_action": [
+        "bias",
+        "no_plan",
+        "screen_changed_last",
+        "candidates_changed_last",
+        "steps_since_observe",
+        "remaining_plan_len",
+        "next_is_click",
+        "next_is_fill",
+        "next_risk_state_changing",
+        "verbalized_confidence",
+        "verbalized_needs_observation",
+    ],
+    "compact_plus_risk": [
+        "bias",
+        "no_plan",
+        "screen_changed_last",
+        "candidates_changed_last",
+        "steps_since_observe",
+        "remaining_plan_len",
+        "next_is_click",
+        "next_risk_state_changing",
+        "next_risk_external",
+        "next_risk_irreversible",
+        "verbalized_confidence",
+        "verbalized_needs_observation",
+    ],
+}
+
+
+def resolve_feature_subset(rows: list[dict], preset: str, features_arg: str | None) -> list[str]:
+    available = feature_names(rows)
+    available_set = set(available)
+    if features_arg:
+        chosen = [name.strip() for name in features_arg.split(",") if name.strip()]
+    elif preset != "all":
+        chosen = FEATURE_PRESETS[preset]
+    else:
+        chosen = available
+    missing = [name for name in chosen if name not in available_set]
+    if missing:
+        raise ValueError(f"Requested features not present in data: {missing}")
+    if "bias" not in chosen:
+        chosen = ["bias", *chosen]
+    seen: set[str] = set()
+    ordered = []
+    for name in chosen:
+        if name in seen:
+            continue
+        seen.add(name)
+        ordered.append(name)
+    return ordered
+
+
 def split_by_task(rows: list[dict], holdout_every: int = 4) -> tuple[list[dict], list[dict]]:
     task_ids = sorted({r.get("task_id", "") for r in rows})
     test_ids = {tid for i, tid in enumerate(task_ids) if i % holdout_every == holdout_every - 1}
@@ -308,12 +375,22 @@ def main() -> None:
         action="store_true",
         help="Use scikit-learn LogisticRegression for the logistic baseline if available.",
     )
+    parser.add_argument(
+        "--feature-preset",
+        choices=sorted(FEATURE_PRESETS.keys()),
+        default="all",
+        help="Named feature subset to train on. Use 'all' for the full feature contract.",
+    )
+    parser.add_argument(
+        "--features",
+        help="Optional comma-separated feature list. Overrides --feature-preset.",
+    )
     args = parser.parse_args()
 
     rows = load_steps(args.steps)
     if not rows:
         raise SystemExit("No labeled rows found. Run runner/collect.mjs first.")
-    names = feature_names(rows)
+    names = resolve_feature_subset(rows, args.feature_preset, args.features)
     train, val, test = split_train_val_test(rows)
 
     learners = ["logistic", "mlp"] if args.learner == "auto" else [args.learner]
@@ -337,6 +414,7 @@ def main() -> None:
         "threshold": args.threshold,
         "selected_learner": winner.learner,
         "selection_split_sizes": {"train": len(train), "val": len(val), "test": len(test)},
+        "feature_preset": args.feature_preset if not args.features else "custom",
         "label_base_rate": round(sum(r["label"] for r in rows) / len(rows), 4),
         "candidate_metrics_val": {c.learner: c.val_metrics for c in candidate_results},
         "metrics": {

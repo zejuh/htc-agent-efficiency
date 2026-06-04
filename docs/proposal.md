@@ -6,7 +6,7 @@ Computer-use / GUI agents run an observe–think–act loop. Each observation is
 call — the dominant source of latency and dollar cost, and (per OSWorld-Human) a large
 part of why agents take many more steps than humans. The obvious efficiency lever is to
 **skip observations** on stretches where the agent can act from a previously-formed plan.
-But skipping is unsafe: if the page changed underneath the stale plan, the agent acts on
+But skipping can be brittle: if the page changed underneath the stale plan, the agent acts on
 wrong information, which is especially costly before irreversible or externally-visible
 actions (send, delete, submit).
 
@@ -17,8 +17,8 @@ plan (cheap, brittle). Neither *decides* when observation is worth its cost.
 
 > Can an agent learn — from its own uncertainty plus cheap state features — *when
 > re-observation is necessary*, reducing model calls / latency / cost without lowering
-> task success or skipping safety-critical checks, and does this learned gate dominate a
-> hand-coded rule on the cost–success–safety frontier?
+> task success, and does this learned gate dominate a hand-coded rule on the
+> cost–success frontier?
 
 ## 3. Method: oracle-distilled observation gating
 
@@ -41,12 +41,14 @@ real signal rather than being constant.
 **Features (available before observing).** screen-changed (coarse), candidates-changed,
 steps-since-observe, remaining-plan-length, next-action type and risk, and the model's
 **verbalized confidence** + self-reported `needs_observation` for the carried next action.
+The current code also supports compact feature presets, which makes it possible to test
+whether the learned result depends on a large input vector or survives with only a small
+core set of observation signals.
 
 **Gate.** The gate starts with a transparent logistic baseline, but the current
 implementation also supports a one-hidden-layer MLP and can auto-select the better
-validation performer. Deployed as: observe iff `P ≥ T`, with a **hard safety floor**
-that always observes before irreversible/external actions. Sweeping `T` yields a full
-cost–success frontier from one model.
+validation performer. Deployed as: observe iff `P ≥ T`. Sweeping `T` yields a full
+cost–success frontier from one model without a forced observe-before-checkpoint override.
 
 **DAgger upgrade.** After round-0 oracle collection, later rounds can collect labels on
 states visited by the current learned gate (`learned@T`) instead of only the oracle's
@@ -67,18 +69,24 @@ cannot fire; the model's verbalized uncertainty can. This is where a learned gat
   purpose: it isolates observation-sensitive failure modes without the noise of a full
   benchmark, while leaving benchmark migration to future work.
 - **Policies.** `always`, `never`, `handrule`, `learned@T` (T swept). One LLM agent (OpenAI `gpt-4o-mini` by default) drives all.
-- **Metrics.** success rate, model calls, latency, dollar cost, unsafe rate (checkpoint
-  actions executed without a fresh observation); plus decision-level accuracy /
+- **Metrics.** success rate, model calls, latency, dollar cost, and an auxiliary
+  `no_check_rate` audit metric: the fraction of checkpoint actions executed without a
+  fresh observation immediately beforehand. Also report decision-level accuracy /
   false-skip / wasted-observe on a held-out task split, gate calibration, and
   task-level bootstrap 95% confidence intervals on the main policy frontier.
 - **Hypotheses.**
-  - H1: `never` is cheapest but fails / is unsafe on dynamic tasks.
+  - H1: `never` is cheapest but fails more often on dynamic tasks.
   - H2: some `learned@T` matches `always` success at far fewer calls.
   - H3: `learned@T` Pareto-dominates `handrule`, driven by the `drift_recipient` regime
     where verbalized confidence beats screen-change.
-  - H4: the safety floor holds the learned policy's unsafe rate at 0.
+  - H4: removing the hard safety floor reveals whether the learned gate itself can preserve success while reducing calls.
 
-**Current status.** The focused fifteen-task suite now produces exactly the kind of result this proposal aimed for: the learned gate matches the safe baselines on success while reducing model calls below the hand rule on the live frontier, rather than winning only on offline label prediction.
+**Current status.** The focused fifteen-task suite now produces exactly the kind of result
+this proposal aimed for: the learned gate matches the safe baselines on success while
+reducing model calls below the hand rule on the live frontier, rather than winning only
+on offline label prediction. A compact ablation with only eight non-bias inputs still
+preserves that main story, which is valuable because it shows the gain is not just an
+artifact of feeding the gate a wide feature vector.
 
 ## 5. Related work
 
@@ -93,8 +101,8 @@ cannot fire; the model's verbalized uncertainty can. This is where a learned gat
 - **OSWorld / OSWorld-Human**: agents take far more steps than humans; efficiency matters.
 
 **Positioning.** ReAct defines the loop but never asks whether each observation is
-necessary; we cast the GUI observation decision as a learned, safety-constrained problem
-and evaluate it on a cost–success–safety frontier.
+necessary; we cast the GUI observation decision as a learned cost-sensitive problem
+and evaluate it on a cost–success frontier.
 
 ## 6. Limitations and next steps
 

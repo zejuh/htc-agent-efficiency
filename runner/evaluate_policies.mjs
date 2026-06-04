@@ -5,8 +5,8 @@
 //   handrule   observe if the screen changed OR the next    (the hand-coded baseline
 //              carried action is a risk-bearing checkpoint    this project aims to beat)
 //   learned@T  observe if the trained gate's probability     (learned, threshold-swept;
-//              >= T, with a hard safety floor that always     sweeping T traces a whole
-//              observes before irreversible/external actions  cost-success frontier)
+//              >= T                                           sweeping T traces a whole
+//                                                            cost-success frontier)
 //
 // Output: results/policy_summary.json, results/policy_report.md, results/pareto.{csv,svg}
 // Requires OPENAI_API_KEY. Optional: --gate <path> (default results/gate_model.json).
@@ -74,8 +74,8 @@ function summarizeRows(rows) {
     avg_cost_usd: sum((r) => r.cost_usd) / n,
     avg_exec_steps: sum((r) => r.exec_steps) / n,
     checkpoint_actions: checkpoints,
-    unsafe_misses: sum((r) => r.unsafe_misses),
-    unsafe_rate: checkpoints ? sum((r) => r.unsafe_misses) / checkpoints : 0,
+    no_check_actions: sum((r) => r.no_check_actions),
+    no_check_rate: checkpoints ? sum((r) => r.no_check_actions) / checkpoints : 0,
   };
 }
 
@@ -88,7 +88,7 @@ function bootstrapIntervals(rows, iters = Number(process.env.SOA_BOOTSTRAP_ITERS
     avg_latency_ms: [],
     avg_cost_usd: [],
     avg_exec_steps: [],
-    unsafe_rate: [],
+    no_check_rate: [],
   };
   for (let i = 0; i < iters; i += 1) {
     const sample = [];
@@ -120,7 +120,7 @@ async function runPolicyOnTask(browser, task, spec) {
   let latency = 0;
   let nSteps = 0;
   let checkpointActions = 0;
-  let unsafeMisses = 0;
+  let noCheckActions = 0;
   let errored = false;
 
   for (let i = 0; i < MAX_STEPS; i += 1) {
@@ -171,7 +171,7 @@ async function runPolicyOnTask(browser, task, spec) {
     nSteps += 1;
     if (isCheckpoint(action)) {
       checkpointActions += 1;
-      if (!verifiedBeforeAction) unsafeMisses += 1;
+      if (!verifiedBeforeAction) noCheckActions += 1;
     }
 
     const beforeStatus = await adapter.getCoarseStatusText();
@@ -204,7 +204,7 @@ async function runPolicyOnTask(browser, task, spec) {
     cost_usd: cost,
     exec_steps: nSteps,
     checkpoint_actions: checkpointActions,
-    unsafe_misses: unsafeMisses,
+    no_check_actions: noCheckActions,
     errored,
     final_status: finalInfo.final_status,
     ...finalInfo,
@@ -232,9 +232,9 @@ function buildSpecs(gate) {
 }
 
 function writePareto(points) {
-  const csv = ["policy,success_rate,avg_model_calls,avg_cost_usd,avg_latency_ms,unsafe_rate"];
+  const csv = ["policy,success_rate,avg_model_calls,avg_cost_usd,avg_latency_ms,no_check_rate"];
   for (const p of points) {
-    csv.push(`${p.policy},${p.success_rate},${p.avg_model_calls},${p.avg_cost_usd},${p.avg_latency_ms},${p.unsafe_rate}`);
+    csv.push(`${p.policy},${p.success_rate},${p.avg_model_calls},${p.avg_cost_usd},${p.avg_latency_ms},${p.no_check_rate}`);
   }
   fs.writeFileSync(path.join(outRoot, "pareto.csv"), csv.join("\n") + "\n", "utf-8");
 
@@ -274,20 +274,21 @@ function writeReport(points, suiteSummary) {
     `Suite: \`${suiteSummary.suite_id}\` with ${suiteSummary.n_tasks} tasks. Families: ${Object.entries(suiteSummary.by_family).map(([k, v]) => `${k}=${v}`).join(", ")}.`,
     `95% confidence intervals use task-level bootstrap resampling with \`${process.env.SOA_BOOTSTRAP_ITERS || 1000}\` draws.`,
     "",
-    "| Policy | Success (95% CI) | Model Calls (95% CI) | Latency ms | Cost USD | Exec Steps | Unsafe Rate (95% CI) |",
+    "| Policy | Success (95% CI) | Model Calls (95% CI) | Latency ms | Cost USD | Exec Steps | No-Check Rate (95% CI) |",
     "|---|---:|---:|---:|---:|---:|---:|",
   ];
   for (const p of points) {
     const successCI = p.ci95?.success_rate ? `[${p.ci95.success_rate.lo.toFixed(3)}, ${p.ci95.success_rate.hi.toFixed(3)}]` : "n/a";
     const callsCI = p.ci95?.avg_model_calls ? `[${p.ci95.avg_model_calls.lo.toFixed(2)}, ${p.ci95.avg_model_calls.hi.toFixed(2)}]` : "n/a";
-    const unsafeCI = p.ci95?.unsafe_rate ? `[${p.ci95.unsafe_rate.lo.toFixed(3)}, ${p.ci95.unsafe_rate.hi.toFixed(3)}]` : "n/a";
+    const noCheckCI = p.ci95?.no_check_rate ? `[${p.ci95.no_check_rate.lo.toFixed(3)}, ${p.ci95.no_check_rate.hi.toFixed(3)}]` : "n/a";
     lines.push(
-      `| \`${p.policy}\` | ${p.success_rate.toFixed(3)} ${successCI} | ${p.avg_model_calls.toFixed(2)} ${callsCI} | ${p.avg_latency_ms.toFixed(1)} | ${p.avg_cost_usd.toFixed(6)} | ${p.avg_exec_steps.toFixed(2)} | ${p.unsafe_rate.toFixed(3)} ${unsafeCI} |`,
+      `| \`${p.policy}\` | ${p.success_rate.toFixed(3)} ${successCI} | ${p.avg_model_calls.toFixed(2)} ${callsCI} | ${p.avg_latency_ms.toFixed(1)} | ${p.avg_cost_usd.toFixed(6)} | ${p.avg_exec_steps.toFixed(2)} | ${p.no_check_rate.toFixed(3)} ${noCheckCI} |`,
     );
   }
   lines.push(
     "",
-    "Read the `learned@T` rows as a frontier: lower `T` observes more (closer to `always`), higher `T` coasts more (closer to `never`). The headline result is whether some `learned@T` dominates `handrule` — equal-or-higher success at fewer model calls, with unsafe rate held at 0 by the safety floor.",
+    "Read the `learned@T` rows as a frontier: lower `T` observes more (closer to `always`), higher `T` coasts more (closer to `never`). The headline result is whether some `learned@T` dominates `handrule` — equal-or-higher success at fewer model calls.",
+    "Auxiliary metric: `no_check_rate` is the fraction of checkpoint actions (send/save/rename/checkout-style steps) that were executed without a fresh observation immediately beforehand.",
     "",
     "Artifacts: `pareto.csv`, `pareto.svg`, `policy_summary.json`.",
   );

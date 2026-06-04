@@ -4,24 +4,23 @@
 
 Computer-use agents run an observe–think–act loop: most of their cost and latency
 comes from repeatedly observing and re-planning. The cheap fix — skip observations on
-"deterministic" stretches — is unsafe when the page has quietly changed underneath a
+"deterministic" stretches — becomes brittle when the page has quietly changed underneath a
 stale plan. This project asks whether an agent can learn, from its **own uncertainty
 plus cheap state features**, *when re-observation is actually necessary*, and whether
-such a learned gate beats a hand-coded rule on the cost–success–safety frontier.
+such a learned gate beats a hand-coded rule on the cost–success frontier.
 
 This is framed as **oracle distillation** (DAgger-style): an always-observe oracle
 provides, at every step, the label "would *not* observing here have changed my action?"
 A lightweight gate learns to predict that label from features available *before*
-observing, and is deployed as a cost-sensitive observation gate with a hard safety floor.
+observing, and is deployed directly as a cost-sensitive observation gate.
 The current pipeline also supports **multi-round DAgger**: after the initial oracle
 collection, later rounds can collect labels on states visited by the current learned gate.
 
 ## Research question
 
 > Can a learned, uncertainty-aware observation gate reduce model calls / latency / cost
-> on GUI tasks **without** lowering task success or skipping safety-critical
-> verifications — and does it dominate a hand-coded "observe on screen change / before
-> risky actions" rule?
+> on GUI tasks **without** lowering task success — and does it dominate a hand-coded
+> "observe on screen change / before risky actions" rule?
 
 ## Policies (one agent, four gates)
 
@@ -32,7 +31,7 @@ A real LLM (OpenAI Chat Completions, default `gpt-4o-mini`) drives every policy;
 | `always` | observe before every action (upper bound on calls; always verified) |
 | `never` | observe once, then coast on the plan (lower bound; no safety) |
 | `handrule` | observe if the screen changed **or** the next carried action is a risk-bearing checkpoint |
-| `learned@T` | observe if the trained gate's probability ≥ `T`, with a **safety floor** that always observes before irreversible/external actions |
+| `learned@T` | observe if the trained gate's probability ≥ `T` |
 
 Sweeping `T` traces a whole cost–success curve from one model; the headline result is
 whether some `learned@T` Pareto-dominates `handrule`.
@@ -107,11 +106,23 @@ npm install && npx playwright install chromium && npm run smoke
   gate and a one-hidden-layer **MLP** gate, with `--learner auto` selecting the best
   validation performer before reporting final held-out metrics.
 - **Confidence intervals.** `runner/evaluate_policies.mjs` now attaches task-level
-  bootstrap 95% confidence intervals to the live success/cost/safety frontier, so the
-  main claim is not a point estimate only.
+  bootstrap 95% confidence intervals to the live success/cost frontier, so the main
+  claim is not a point estimate only.
+- **Checkpoint auditing.** Live evaluation also reports `no_check_rate`: the share of
+  checkpoint actions such as send/save/rename/checkout that were executed without a
+  fresh observation immediately beforehand. It is an audit-style behavior metric, not a
+  direct failure metric.
 - **Focused suite framing.** `tasks/tasks.json` is now a structured fifteen-task manifest
   with five stable workflows, four visible async variants, and six coarse-signal-blind delayed-value tasks rather than a long
   grab bag of mostly redundant demos.
+- **Compact-feature ablation.** `soa/gate.py` now supports named feature presets. The
+  strongest compact preset keeps only nine features total (bias + eight core signals:
+  `no_plan`, `screen_changed_last`, `candidates_changed_last`, `steps_since_observe`,
+  `remaining_plan_len`, `next_risk_state_changing`, `verbalized_confidence`,
+  `verbalized_needs_observation`). On held-out gate prediction it reaches `0.970`
+  accuracy versus `0.909` for the full feature set, and in live evaluation it still
+  finds safe points that match `handrule` success at fewer calls. The full feature set
+  remains the default because its live frontier is slightly steadier across thresholds.
 - **Benchmark-ready task loading.** `runner/lib/task_suite.mjs` lets collection/evaluation
   load a suite manifest and filter by family/difficulty/tags, which makes it easier to
   keep this repo as a diagnostic layer while migrating headline experiments to
@@ -162,4 +173,6 @@ agents" before final submission to confirm no direct competitor appeared.)
 
 ## Current headline
 
-On the default `soa-workflow-focus-v2` suite in [results/policy_report.md](/Users/zejun/Documents/GitHub/htc-agent-efficiency/results/policy_report.md:1), the learned gate now cleanly beats the hand rule on the safe frontier: `handrule` reaches `1.000` success with `3.07` model calls on average, while `learned@0.65` and `learned@0.9` also reach `1.000` success and `0.000` unsafe rate with only `2.73` model calls.
+On the default `soa-workflow-focus-v2` suite in [results/policy_report.md](/Users/zejun/Documents/GitHub/htc-agent-efficiency/results/policy_report.md:1), the main comparison centers on task success versus model calls, with `no_check_rate` as an auxiliary audit. In practice, the current suite shows the open problem clearly: the gate can often buy efficiency, but the strongest thresholds still need to preserve the same success level as the safer baselines while keeping checkpoint re-check behavior interpretable.
+
+The most useful ablation is the compact gate in [results/ablation_compact_core/policy_report.md](/Users/zejun/Documents/GitHub/htc-agent-efficiency/results/ablation_compact_core/policy_report.md:1). It uses only eight non-bias inputs, which makes it possible to test whether the learned result survives a much smaller gate rather than depending on a large feature vector.

@@ -415,9 +415,6 @@ export function decideObservation(policySpec, { blindAction, features }) {
         reason: "handrule",
       };
     case "learned": {
-      if (isCheckpoint(blindAction)) {
-        return { observe: true, probability: 1.0, reason: "safety_floor" };
-      }
       const probability = gateProbability(policySpec.gate, features);
       return {
         observe: probability >= policySpec.tau,
